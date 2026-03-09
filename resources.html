@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resources - Univolt Power</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="page-wrapper">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <a href="index.html" class="logo" aria-label="Univolt Power Home">
+          <img src="logo.png" alt="Univolt Power" class="site-logo" />
+        </a>
+
+        <nav class="nav-desktop">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="about.html" class="nav-link">About</a>
+          <a href="products.html" class="nav-link">Products</a>
+          <a href="solutions.html" class="nav-link">Solutions</a>
+          <a href="projects.html" class="nav-link">Projects</a>
+          <a href="resources.html" class="nav-link">Resources</a>
+          <a href="contact.html" class="nav-link">Contact</a>
+          <a href="getaquote.html" class="btn btn-primary" style="padding: 0.5rem 1.5rem; font-size: 0.875rem; margin-left: 1rem;">Get Quote</a>
+        </nav>
+
+        <div class="header-actions">
+          <button class="cart-button" onclick="cart.openCart()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+            <span id="cart-count" class="cart-count" style="display: none;">0</span>
+          </button>
+          
+          <button id="mobile-menu-btn" class="mobile-menu-btn" onclick="toggleMobileMenu()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <nav id="mobile-menu" class="nav-mobile">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="products.html" class="nav-link">Products</a>
+        <a href="solutions.html" class="nav-link">Solutions</a>
+        <a href="projects.html" class="nav-link">Projects</a>
+        <a href="resources.html" class="nav-link">Resources</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+        <a href="getaquote.html" class="nav-link">Get Quote</a>
+      </nav>
+    </header>
+
+    <!-- Cart Drawer -->
+    <div id="cart-overlay" class="cart-overlay"></div>
+    <div id="cart-drawer" class="cart-drawer">
+      <div class="cart-header">
+        <h2 class="cart-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          Your Cart
+        </h2>
+        <button class="cart-close" onclick="cart.closeCart()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="cart-items" id="cart-items"></div>
+      
+      <div id="cart-empty" class="cart-empty">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity: 0.2; margin: 0 auto 1rem;">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        <p>Your cart is empty.</p>
+        <button style="margin-top: 1rem; color: var(--brand-blue); font-weight: 500;" onclick="cart.closeCart()">
+          Start Shopping
+        </button>
+      </div>
+      
+      <div class="cart-footer">
+        <div class="cart-total">
+          <span class="cart-total-label">Total</span>
+          <span id="cart-total" class="cart-total-amount">$0.00</span>
+        </div>
+        <button id="checkout-btn" class="btn-checkout" onclick="handleCheckout()">Checkout</button>
+      </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast success">
+      <svg class="toast-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+      </svg>
+      <span id="toast-message" class="toast-message"></span>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Page Header -->
+      <section class="page-header" style="background: var(--brand-blue);">
+        <div class="page-header-content">
+          <h1>Resources</h1>
+          <p style="color: var(--slate-200);">Knowledge and tools to empower your solar journey.</p>
+        </div>
+      </section>
+
+      <!-- Resources Content -->
+      <section class="section" style="background: var(--slate-50);">
+        <div class="container">
+          
+          <!-- Latest Articles -->
+          <div style="margin-bottom: 6rem;">
+            <div style="display: flex; align-items: center; margin-bottom: 2rem;">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--brand-blue); margin-right: 1rem;">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+              </svg>
+              <h2 style="font-size: 2rem; font-weight: bold; color: var(--slate-900);">Latest Articles</h2>
+            </div>
+
+            <div class="grid grid-3">
+              <!-- Article 1 -->
+              <div class="card" style="transition: all 0.2s;">
+                <div style="height: 192px; background: var(--slate-200); width: 100%; position: relative;">
+                  <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.5), transparent); display: flex; align-items: flex-end; padding: 1.5rem;">
+                    <span style="color: white; font-size: 0.875rem; font-weight: 500;">Solar Technology</span>
+                  </div>
+                </div>
+                <div style="padding: 1.5rem;">
+                  <h3 style="font-size: 1.25rem; font-weight: bold; color: var(--slate-900); margin-bottom: 0.5rem; cursor: pointer; transition: color 0.2s;">Understanding Net Metering 2.0</h3>
+                  <p style="color: var(--slate-600); margin-bottom: 1rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                    A comprehensive guide to how net metering policies are changing and what it means for new solar installations in your area.
+                  </p>
+                  <a href="#" style="color: var(--brand-blue); font-weight: 500; display: flex; align-items: center; transition: text-decoration 0.2s;">
+                    Read More 
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: 0.25rem;">
+                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                      <polyline points="15 3 21 3 21 9"></polyline>
+                      <line x1="10" y1="14" x2="21" y2="3"></line>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+
+              <!-- Article 2 -->
+              <div class="card">
+                <div style="height: 192px; background: var(--slate-200); width: 100%; position: relative;">
+                  <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.5), transparent); display: flex; align-items: flex-end; padding: 1.5rem;">
+                    <span style="color: white; font-size: 0.875rem; font-weight: 500;">Installation Guide</span>
+                  </div>
+                </div>
+                <div style="padding: 1.5rem;">
+                  <h3 style="font-size: 1.25rem; font-weight: bold; color: var(--slate-900); margin-bottom: 0.5rem;">5 Steps to Solar Installation</h3>
+                  <p style="color: var(--slate-600); margin-bottom: 1rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                    From site assessment to system activation, learn what to expect during your solar installation journey with our expert team.
+                  </p>
+                  <a href="#" style="color: var(--brand-blue); font-weight: 500; display: flex; align-items: center;">
+                    Read More 
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: 0.25rem;">
+                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                      <polyline points="15 3 21 3 21 9"></polyline>
+                      <line x1="10" y1="14" x2="21" y2="3"></line>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+
+              <!-- Article 3 -->
+              <div class="card">
+                <div style="height: 192px; background: var(--slate-200); width: 100%; position: relative;">
+                  <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.5), transparent); display: flex; align-items: flex-end; padding: 1.5rem;">
+                    <span style="color: white; font-size: 0.875rem; font-weight: 500;">Energy Storage</span>
+                  </div>
+                </div>
+                <div style="padding: 1.5rem;">
+                  <h3 style="font-size: 1.25rem; font-weight: bold; color: var(--slate-900); margin-bottom: 0.5rem;">Battery Storage 101</h3>
+                  <p style="color: var(--slate-600); margin-bottom: 1rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                    Discover how battery storage systems work and why they're essential for maximizing your solar investment and energy independence.
+                  </p>
+                  <a href="#" style="color: var(--brand-blue); font-weight: 500; display: flex; align-items: center;">
+                    Read More 
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: 0.25rem;">
+                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                      <polyline points="15 3 21 3 21 9"></polyline>
+                      <line x1="10" y1="14" x2="21" y2="3"></line>
+                    </svg>
+                  </a>
+              </svg>
+              <h2 style="font-size: 2rem; font-weight: bold; color: var(--slate-900);">Downloads & Datasheets</h2>
+            </div>
+
+            <div class="grid grid-4">
+              <!-- Download 1 -->
+              <div style="display: flex; align-items: center; padding: 1rem; background: var(--slate-50); border-radius: 0.5rem; border: 1px solid var(--slate-200); cursor: pointer; transition: background 0.2s;">
+                <div style="background: rgba(46, 52, 127, 0.1); padding: 0.75rem; border-radius: 0.5rem; margin-right: 1rem; transition: background 0.2s;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--brand-blue);">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                  </svg>
+                </div>
+                <div>
+                  <h4 style="font-weight: 600; color: var(--slate-900); font-size: 0.875rem;">Product Catalog 2024</h4>
+                  <span style="font-size: 0.75rem; color: var(--slate-500); text-transform: uppercase;">PDF • 2.4 MB</span>
+                </div>
+              </div>
+
+              <!-- Download 2 -->
+              <div style="display: flex; align-items: center; padding: 1rem; background: var(--slate-50); border-radius: 0.5rem; border: 1px solid var(--slate-200); cursor: pointer; transition: background 0.2s;">
+                <div style="background: rgba(46, 52, 127, 0.1); padding: 0.75rem; border-radius: 0.5rem; margin-right: 1rem;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--brand-blue);">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                  </svg>
+                </div>
+                <div>
+                  <h4 style="font-weight: 600; color: var(--slate-900); font-size: 0.875rem;">Installation Guide</h4>
+                  <span style="font-size: 0.75rem; color: var(--slate-500); text-transform: uppercase;">PDF • 2.4 MB</span>
+                </div>
+              </div>
+
+              <!-- Download 3 -->
+              <div style="display: flex; align-items: center; padding: 1rem; background: var(--slate-50); border-radius: 0.5rem; border: 1px solid var(--slate-200); cursor: pointer; transition: background 0.2s;">
+                <div style="background: rgba(46, 52, 127, 0.1); padding: 0.75rem; border-radius: 0.5rem; margin-right: 1rem;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--brand-blue);">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                  </svg>
+                </div>
+                <div>
+                  <h4 style="font-weight: 600; color: var(--slate-900); font-size: 0.875rem;">Warranty Information</h4>
+                  <span style="font-size: 0.75rem; color: var(--slate-500); text-transform: uppercase;">PDF • 2.4 MB</span>
+                </div>
+              </div>
+
+              <!-- Download 4 -->
+              <div style="display: flex; align-items: center; padding: 1rem; background: var(--slate-50); border-radius: 0.5rem; border: 1px solid var(--slate-200); cursor: pointer; transition: background 0.2s;">
+                <div style="background: rgba(46, 52, 127, 0.1); padding: 0.75rem; border-radius: 0.5rem; margin-right: 1rem;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--brand-blue);">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                  </svg>
+                </div>
+                <div>
+                  <h4 style="font-weight: 600; color: var(--slate-900); font-size: 0.875rem;">Compliance Certificates</h4>
+                  <span style="font-size: 0.75rem; color: var(--slate-500); text-transform: uppercase;">PDF • 2.4 MB</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- FAQs -->
+          <div>
+            <div style="display: flex; align-items: center; margin-bottom: 2rem;">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--brand-blue); margin-right: 1rem;">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+              <h2 style="font-size: 2rem; font-weight: bold; color: var(--slate-900);">Frequently Asked Questions</h2>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+              <!-- FAQ 1 -->
+              <details class="card" style="padding: 1.5rem; cursor: pointer;">
+                <summary style="font-weight: bold; color: var(--slate-900); font-size: 1.125rem; list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                  What is the lifespan of a solar panel system?
+                  <span style="transition: transform 0.3s;">▼</span>
+                </summary>
+                <p style="margin-top: 1rem; color: var(--slate-600); line-height: 1.7; border-top: 1px solid var(--slate-100); padding-top: 1rem;">
+                  Most solar panel systems are designed to last 25-30 years with minimal degradation in performance. High-quality panels like those we install typically maintain over 80% of their original output after 25 years.
+                </p>
+              </details>
+
+              <!-- FAQ 2 -->
+              <details class="card" style="padding: 1.5rem; cursor: pointer;">
+                <summary style="font-weight: bold; color: var(--slate-900); font-size: 1.125rem; list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                  Do I still pay an electric bill with solar?
+                  <span style="transition: transform 0.3s;">▼</span>
+                </summary>
+                <p style="margin-top: 1rem; color: var(--slate-600); line-height: 1.7; border-top: 1px solid var(--slate-100); padding-top: 1rem;">
+                  It depends on your system size and local utility policies. While you may still have a small connection fee, many customers eliminate their usage charges completely. With net metering, excess energy you generate can even earn credits.
+                </p>
+              </details>
+
+              <!-- FAQ 3 -->
+              <details class="card" style="padding: 1.5rem; cursor: pointer;">
+                <summary style="font-weight: bold; color: var(--slate-900); font-size: 1.125rem; list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                  What happens during a power outage?
+                  <span style="transition: transform 0.3s;">▼</span>
+                </summary>
+                <p style="margin-top: 1rem; color: var(--slate-600); line-height: 1.7; border-top: 1px solid var(--slate-100); padding-top: 1rem;">
+                  Standard grid-tied solar systems will shut down for safety during outages. However, if you have battery storage, you can continue to power essential loads. This is why we recommend our hybrid systems with backup batteries.
+                </p>
+              </details>
+
+              <!-- FAQ 4 -->
+              <details class="card" style="padding: 1.5rem; cursor: pointer;">
+                <summary style="font-weight: bold; color: var(--slate-900); font-size: 1.125rem; list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                  How much can I save with solar?
+                  <span style="transition: transform 0.3s;">▼</span>
+                </summary>
+                <p style="margin-top: 1rem; color: var(--slate-600); line-height: 1.7; border-top: 1px solid var(--slate-100); padding-top: 1rem;">
+                  Savings vary based on your location, energy consumption, and system size. On average, homeowners save $20,000-$60,000 over 25 years. Commercial installations see even greater returns due to higher energy usage and tax incentives.
+                </p>
+              </details>
+
+              <!-- FAQ 5 -->
+              <details class="card" style="padding: 1.5rem; cursor: pointer;">
+                <summary style="font-weight: bold; color: var(--slate-900); font-size: 1.125rem; list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                  Do solar panels work in cloudy weather?
+                  <span style="transition: transform 0.3s;">▼</span>
+                </summary>
+                <p style="margin-top: 1rem; color: var(--slate-600); line-height: 1.7; border-top: 1px solid var(--slate-100); padding-top: 1rem;">
+                  Yes! Solar panels can still generate electricity on cloudy days, though at reduced efficiency (typically 10-25% of peak output). Modern panels are highly efficient and can produce significant power even in less-than-ideal conditions.
+                </p>
+              </details>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+              <a href="#"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
+            </div>
+          </div>
+
+          <div class="footer-section">
+            <h3>Quick Links</h3>
+            <ul>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="about.html">About</a></li>
+              <li><a href="products.html">Products</a></li>
+              <li><a href="solutions.html">Services</a></li>
+              <li><a href="projects.html">Projects</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-section">
+            <h3>Our Services</h3>
+            <ul>
+              <li><a href="solutions.html">Commercial Solar</a></li>
+              <li><a href="solutions.html">Residential Installation</a></li>
+              <li><a href="solutions.html">Maintenance & Repairs</a></li>
+              <li><a href="solutions.html">Battery Storage</a></li>
+              <li><a href="solutions.html">Consulting</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-section">
+            <h3>Contact Us</h3>
+            <ul style="font-size: 0.875rem;">
+              <li style="display: flex; align-items: start; margin-bottom: 0.75rem;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--brand-blue); margin-right: 0.5rem; flex-shrink: 0;">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                <span>123 Solar Blvd, Suite 100<br>Sun City, AZ 85001</span>
+              </li>
+              <li style="display: flex; align-items: center; margin-bottom: 0.75rem;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--brand-blue); margin-right: 0.5rem;">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                </svg>
+                <span>+1 (555) 123-4567</span>
+              </li>
+              <li style="display: flex; align-items: center;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--brand-blue); margin-right: 0.5rem;">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                  <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+                <span>info@univoltpower.com</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="footer-bottom">
+          <p>&copy; 2026 Univolt Power. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

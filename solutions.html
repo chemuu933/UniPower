@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solutions - Univolt Power</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="page-wrapper">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <a href="index.html" class="logo" aria-label="Univolt Power Home">
+          <img src="logo.png" alt="Univolt Power" class="site-logo" />
+        </a>
+
+        <nav class="nav-desktop">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="about.html" class="nav-link">About</a>
+          <a href="products.html" class="nav-link">Products</a>
+          <a href="solutions.html" class="nav-link">Solutions</a>
+          <a href="projects.html" class="nav-link">Projects</a>
+          <a href="resources.html" class="nav-link">Resources</a>
+          <a href="contact.html" class="nav-link">Contact</a>
+          <a href="getaquote.html" class="btn btn-primary" style="padding: 0.5rem 1.5rem; font-size: 0.875rem; margin-left: 1rem;">Get Quote</a>
+        </nav>
+
+        <div class="header-actions">
+          <a href="getaquote.html" class="btn btn-primary" style="padding: 0.5rem 1.5rem; font-size: 0.875rem; margin-right: 1rem; display: none;">Get Quote</a>
+          
+          <button class="cart-button" onclick="cart.openCart()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+            <span id="cart-count" class="cart-count" style="display: none;">0</span>
+          </button>
+          
+          <button id="mobile-menu-btn" class="mobile-menu-btn" onclick="toggleMobileMenu()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <nav id="mobile-menu" class="nav-mobile">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="products.html" class="nav-link">Products</a>
+        <a href="solutions.html" class="nav-link">Solutions</a>
+        <a href="projects.html" class="nav-link">Projects</a>
+        <a href="resources.html" class="nav-link">Resources</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+        <a href="getaquote.html" class="nav-link">Get Quote</a>
+      </nav>
+    </header>
+
+    <!-- Cart Drawer -->
+    <div id="cart-overlay" class="cart-overlay"></div>
+    <div id="cart-drawer" class="cart-drawer">
+      <div class="cart-header">
+        <h2 class="cart-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          Your Cart
+        </h2>
+        <button class="cart-close" onclick="cart.closeCart()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="cart-items" id="cart-items"></div>
+      
+      <div id="cart-empty" class="cart-empty">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity: 0.2; margin: 0 auto 1rem;">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        <p>Your cart is empty.</p>
+        <button style="margin-top: 1rem; color: var(--brand-blue); font-weight: 500;" onclick="cart.closeCart()">
+          Start Shopping
+        </button>
+      </div>
+      
+      <div class="cart-footer">
+        <div class="cart-total">
+          <span class="cart-total-label">Total</span>
+          <span id="cart-total" class="cart-total-amount">$0.00</span>
+        </div>
+        <button id="checkout-btn" class="btn-checkout" onclick="handleCheckout()">Checkout</button>
+      </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast success">
+      <svg class="toast-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+      </svg>
+      <span id="toast-message" class="toast-message"></span>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Page Header -->
+      <section class="page-header">
+        <div class="page-header-overlay"></div>
+        <img src="https://images.unsplash.com/photo-1742112125554-fdb788faedaa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb25zdHJ1Y3Rpb24lMjB3b3JrZXIlMjBzb2xhciUyMHBhbmVsJTIwaW5zdGFsbGF0aW9ufGVufDF8fHx8MTc3MTU3ODA5MHww&ixlib=rb-4.1.0&q=80&w=1080" alt="Solar Solutions" class="page-header-image">
+        <div class="page-header-content">
+          <h1>Our Solutions</h1>
+          <p>Comprehensive solar and electrical solutions tailored to your needs.</p>
+        </div>
+      </section>
+
+      <!-- Solutions Grid -->
+      <section class="section" style="background: var(--slate-50);">
+        <div class="container">
+          <div class="grid grid-2" style="gap: 2rem;">
+            
+            <!-- Solution 1: Solar EPC -->
+            <div class="card" style="padding: 2rem; transition: all 0.3s; cursor: pointer;" onclick="window.location.href='getaquote.html'">
+              <div style="background: var(--brand-blue); width: 64px; height: 64px; border-radius: 0.75rem; display: flex; align-items: center; justify-center; margin-bottom: 1.5rem;">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                  <circle cx="12" cy="12" r="5"></circle>
+                  <line x1="12" y1="1" x2="12" y2="3"></line>
+                  <line x1="12" y1="21" x2="12" y2="23"></line>
+                  <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                  <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                  <line x1="1" y1="12" x2="3" y2="12"></line>
+                  <line x1="21" y1="12" x2="23" y2="12"></line>
+                  <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                  <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+              </div>
+              <h3 style="font-size: 1.5rem; font-weight: bold; color: var(--slate-900); margin-bottom: 1rem;">Solar EPC Solutions</h3>
+              <p style="color: var(--slate-600); line-height: 1.7; margin-bottom: 1.5rem;">
+                Complete Engineering, Procurement, and Construction services for utility-scale and large commercial solar projects. We handle everything from initial design to final commissioning, delivering turnkey solar power plants with maximum efficiency and reliability.
+              </p>
+              <a href="getaquote.html" style="color: var(--brand-blue); font-weight: 600; display: inline-flex; align-items: center;">
+                Get Quote 
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: 0.5rem;">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+            </div>
+
+            <!-- Solution 2: Residential Solar -->
+            <div class="card" style="padding: 2rem; transition: all 0.3s; cursor: pointer;" onclick="window.location.href='getaquote.html'">
+              <div style="background: #16a34a; width: 64px; height: 64px; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                  <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+              </div>
+              <h3 style="font-size: 1.5rem; font-weight: bold; color: var(--slate-900); margin-bottom: 1rem;">Residential Solar Solutions</h3>
+              <p style="color: var(--slate-600); line-height: 1.7; margin-bottom: 1.5rem;">
+                Transform your home into a clean energy powerhouse with our residential solar packages. From rooftop installations to battery backup systems, we provide customized solutions that reduce electricity bills and increase property value.
+              </p>
+              <a href="getaquote.html" style="color: #16a34a; font-weight: 600; display: inline-flex; align-items: center;">
+                Get Quote 
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: 0.5rem;">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+            </div>
+
+            <!-- Solution 3: Commercial & Industrial -->
+            <div class="card" style="padding: 2rem; transition: all 0.3s; cursor: pointer;" onclick="window.location.href='getaquote.html'">
+              <div style="background: #2563eb; width: 64px; height: 64px; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                  <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                  <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                </svg>
+              </div>
+              <h3 style="font-size: 1.5rem; font-weight: bold; color: var(--slate-900); margin-bottom: 1rem;">Commercial & Industrial Solar Solutions</h3>
+              <p style="color: var(--slate-600); line-height: 1.7; margin-bottom: 1.5rem;">
+                Reduce operational costs and achieve sustainability goals with our C&I solar solutions. We design and install high-capacity systems for factories, warehouses, office buildings, and shopping centers with minimal disruption to your business operations.
+              </p>
+              <a href="getaquote.html" style="color: #2563eb; font-weight: 600; display: inline-flex; align-items: center;">
+                Get Quote 
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: 0.5rem;">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+            </div>
+
+            <!-- Solution 4: Solar Water Pumping -->
+            <div class="card" style="padding: 2rem; transition: all 0.3s; cursor: pointer;" onclick="window.location.href='getaquote.html'">
+              <div style="background: #0891b2; width: 64px; height: 64px; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                  <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+                </svg>
+              </div>
+              <h3 style="font-size: 1.5rem; font-weight: bold; color: var(--slate-900); margin-bottom: 1rem;">Solar Water Pumping Solutions</h3>
+              <p style="color: var(--slate-600); line-height: 1.7; margin-bottom: 1.5rem;">
+                Reliable and cost-effective water pumping for agriculture, livestock, and domestic use. Our solar pumping systems eliminate fuel costs and provide sustainable water access even in remote locations without grid connectivity.
+              </p>
+              <a href="getaquote.html" style="color: #0891b2; font-weight: 600; display: inline-flex; align-items: center;">
+                Get Quote 
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: 0.5rem;">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+            </div>
+
+            <!-- Solution 5: Solar Hot Water -->
+            <div class="card" style="padding: 2rem; transition: all 0.3s; cursor: pointer;" onclick="window.location.href='getaquote.html'">
+              <div style="background: #dc2626; width: 64px; height: 64px; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                  <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path>
+                </svg>
+              </div>
+              <h3 style="font-size: 1.5rem; font-weight: bold; color: var(--slate-900); margin-bottom: 1rem;">Solar Hot Water Solutions</h3>
+              <p style="color: var(--slate-600); line-height: 1.7; margin-bottom: 1.5rem;">
+                Energy-efficient solar water heating systems for homes, hotels, hospitals, and industrial processes. Reduce water heating costs by up to 70% with our thermosiphon and pumped circulation systems backed by long-term warranties.
+              </p>
+              <a href="getaquote.html" style="color: #dc2626; font-weight: 600; display: inline-flex; align-items: center;">
+                Get Quote 
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: 0.5rem;">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+            </div>
+
+            <!-- Solution 6: Solar Equipment Supply -->
+            <div class="card" style="padding: 2rem; transition: all 0.3s; cursor: pointer;" onclick="window.location.href='products.html'">
+              <div style="background: #9333ea; width: 64px; height: 64px; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                  <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                  <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                </svg>
+              </div>
+              <h3 style="font-size: 1.5rem; font-weight: bold; color: var(--slate-900); margin-bottom: 1rem;">Solar Equipment Supply</h3>
+              <p style="color: var(--slate-600); line-height: 1.7; margin-bottom: 1.5rem;">
+                Direct supply of high-quality solar panels, inverters, batteries, mounting structures, and accessories from leading global manufacturers. Competitive pricing, bulk discounts, and technical support for installers and contractors.
+              </p>
+              <a href="products.html" style="color: #9333ea; font-weight: 600; display: inline-flex; align-items: center;">
+                View Products 
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: 0.5rem;">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+            </div>
+
+            <!-- Solution 7: Electrical Installations -->
+            <div class="card" style="padding: 2rem; transition: all 0.3s; cursor: pointer;" onclick="window.location.href='getaquote.html'">
+              <div style="background: #ea580c; width: 64px; height: 64px; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                </svg>
+              </div>
+              <h3 style="font-size: 1.5rem; font-weight: bold; color: var(--slate-900); margin-bottom: 1rem;">Electrical Installations & Power Solutions</h3>
+              <p style="color: var(--slate-600); line-height: 1.7; margin-bottom: 1.5rem;">
+                Complete electrical contracting services including building wiring, power distribution, generator installations, UPS systems, and energy audits. Licensed electricians ensuring code compliance and safety for residential, commercial, and industrial clients.
+              </p>
+              <a href="getaquote.html" style="color: #ea580c; font-weight: 600; display: inline-flex; align-items: center;">
+                Get Quote 
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: 0.5rem;">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-grid">
+          <div class="footer-section">
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+              <a href="index.html" class="logo" aria-label="Univolt Power Home">
+                <img src="im6.jpeg" alt="Univolt Power" class="site-logo" style="box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+              </a>
+            </div>
+            <p>Leading the way in sustainable energy solutions.</p>
+          </div>
+
+          <div class="footer-section">
+            <h3>Quick Links</h3>
+            <ul>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="about.html">About</a></li>
+              <li><a href="products.html">Products</a></li>
+              <li><a href="solutions.html">Solutions</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-section">
+            <h3>Our Solutions</h3>
+            <ul>
+              <li><a href="solutions.html">Solar EPC Solutions</a></li>
+              <li><a href="solutions.html">Residential Solar</a></li>
+              <li><a href="solutions.html">Commercial & Industrial</a></li>
+              <li><a href="solutions.html">Solar Water Pumping</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-section">
+            <h3>Contact Us</h3>
+            <p style="font-size: 0.875rem;">univoltpower@gmail.com<br>+1 (555) 123-4567</p>
+          </div>
+        </div>
+        
+        <div class="footer-bottom">
+          <p>&copy; 2026 Univolt Power. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

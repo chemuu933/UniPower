@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects - Univolt Power</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="page-wrapper">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+    <a href="index.html" class="logo" aria-label="Univolt Power Home">
+          <img src="logo.png" alt="Univolt Power" class="site-logo" />
+        </a>
+
+        <nav class="nav-desktop">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="about.html" class="nav-link">About</a>
+          <a href="products.html" class="nav-link">Products</a>
+          <a href="solutions.html" class="nav-link">Solutions</a>
+          <a href="projects.html" class="nav-link">Projects</a>
+          <a href="resources.html" class="nav-link">Resources</a>
+          <a href="contact.html" class="nav-link">Contact</a>
+          <a href="getaquote.html" class="btn btn-primary" style="padding: 0.5rem 1.5rem; font-size: 0.875rem; margin-left: 1rem;">Get Quote</a>
+        </nav>
+
+        <div class="header-actions">
+          <button class="cart-button" onclick="cart.openCart()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+            <span id="cart-count" class="cart-count" style="display: none;">0</span>
+          </button>
+          
+          <button id="mobile-menu-btn" class="mobile-menu-btn" onclick="toggleMobileMenu()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <nav id="mobile-menu" class="nav-mobile">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="products.html" class="nav-link">Products</a>
+        <a href="solutions.html" class="nav-link">Solutions</a>
+        <a href="projects.html" class="nav-link">Projects</a>
+        <a href="resources.html" class="nav-link">Resources</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+        <a href="getaquote.html" class="nav-link">Get Quote</a>
+      </nav>
+    </header>
+
+    <!-- Cart Drawer -->
+    <div id="cart-overlay" class="cart-overlay"></div>
+    <div id="cart-drawer" class="cart-drawer">
+      <div class="cart-header">
+        <h2 class="cart-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          Your Cart
+        </h2>
+        <button class="cart-close" onclick="cart.closeCart()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="cart-items" id="cart-items"></div>
+      
+      <div id="cart-empty" class="cart-empty">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity: 0.2; margin: 0 auto 1rem;">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        <p>Your cart is empty.</p>
+        <button style="margin-top: 1rem; color: var(--brand-blue); font-weight: 500;" onclick="cart.closeCart()">
+          Start Shopping
+        </button>
+      </div>
+      
+      <div class="cart-footer">
+        <div class="cart-total">
+          <span class="cart-total-label">Total</span>
+          <span id="cart-total" class="cart-total-amount">$0.00</span>
+        </div>
+        <button id="checkout-btn" class="btn-checkout" onclick="handleCheckout()">Checkout</button>
+      </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast success">
+      <svg class="toast-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+      </svg>
+      <span id="toast-message" class="toast-message"></span>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Page Header -->
+      <section class="page-header" style="background: var(--slate-900);">
+        <div class="page-header-content">
+          <h1>Our Projects</h1>
+          <p style="color: var(--slate-400);">Showcasing our commitment to a sustainable future.</p>
+        </div>
+      </section>
+
+      <!-- Projects Section -->
+      <section class="section" style="background: var(--slate-50);">
+        <div class="container">
+          <!-- Filter Buttons -->
+          <div class="filter-group">
+            <button class="filter-btn active" data-category="All" onclick="filterProjects('All')">All</button>
+            <button class="filter-btn" data-category="Commercial" onclick="filterProjects('Commercial')">Commercial</button>
+            <button class="filter-btn" data-category="Utility" onclick="filterProjects('Utility')">Utility</button>
+            <button class="filter-btn" data-category="Agricultural" onclick="filterProjects('Agricultural')">Agricultural</button>
+            <button class="filter-btn" data-category="Public Sector" onclick="filterProjects('Public Sector')">Public Sector</button>
+          </div>
+
+          <!-- Projects Grid -->
+          <div class="grid grid-3">
+            <!-- Project 1 -->
+            <div class="project-card card" data-category="Commercial">
+              <div style="position: relative; height: 256px; overflow: hidden;">
+                <img src="https://images.unsplash.com/photo-1635424709961-f3a150459ad4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzb2xhciUyMHBhbmVscyUyMGluc3RhbGxhdGlvbiUyMHJvb2Z0b3B8ZW58MXx8fHwxNzcxNTY2OTk3fDA&ixlib=rb-4.1.0&q=80&w=1080" alt="Sunshine Manufacturing Plant" class="card-image">
+                <div style="position: absolute; top: 1rem; right: 1rem; background: rgba(15, 23, 42, 0.8); color: white; font-size: 0.75rem; font-weight: bold; padding: 0.25rem 0.75rem; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.05em;">
+                  Commercial
+                </div>
+              </div>
+              <div class="card-content">
+                <h3 style="font-size: 1.25rem; font-weight: bold; color: var(--slate-900); margin-bottom: 0.5rem; transition: color 0.2s;">Sunshine Manufacturing Plant</h3>
+                <div style="margin-top: 1rem;">
+                  <div style="display: flex; align-items: center; color: var(--slate-600); font-size: 0.875rem; margin-bottom: 0.5rem;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--brand-blue); margin-right: 0.5rem;">
+                      <circle cx="12" cy="12" r="5"></circle>
+                      <line x1="12" y1="1" x2="12" y2="3"></line>
+                      <line x1="12" y1="21" x2="12" y2="23"></line>
+                      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                      <line x1="1" y1="12" x2="3" y2="12"></line>
+                      <line x1="21" y1="12" x2="23" y2="12"></line>
+                      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <span>Capacity: <span style="font-weight: 600; color: var(--slate-900);">1.2 MW</span></span>
+                  </div>
+                  <div style="display: flex; align-items: center; color: var(--slate-600); font-size: 0.875rem;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--brand-blue); margin-right: 0.5rem;">
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                      <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    <span>Location: <span style="font-weight: 600; color: var(--slate-900);">Nairobi,Kenya</span></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="project-card card" data-category="Agricultural">
+              <div style="position: relative; height: 256px; overflow: hidden;">
+                <img src="https://images.unsplash.com/photo-1670519808965-16b9b2f724af?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzb2xhciUyMGZhcm0lMjBncmVlbiUyMGVuZXJneXxlbnwxfHx8fDE3NzE1NTk2NDR8MA&ixlib=rb-4.1.0&q=80&w=1080" alt="Green Valley Farms" class="card-image">
+                <div style="position: absolute; top: 1rem; right: 1rem; background: rgba(15, 23, 42, 0.8); color: white; font-size: 0.75rem; font-weight: bold; padding: 0.25rem 0.75rem; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.05em;">
+                  Agricultural
+                </div>
+              </div>
+              <div class="card-content">
+                <h3 style="font-size: 1.25rem; font-weight: bold; color: var(--slate-900); margin-bottom: 0.5rem;">Green Valley Farms</h3>
+                <div style="margin-top: 1rem;">
+                  <div style="display: flex; align-items: center; color: var(--slate-600); font-size: 0.875rem; margin-bottom: 0.5rem;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--brand-blue); margin-right: 0.5rem;">
+                      <circle cx="12" cy="12" r="5"></circle>
+                      <line x1="12" y1="1" x2="12" y2="3"></line>
+                      <line x1="12" y1="21" x2="12" y2="23"></line>
+                      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                      <line x1="1" y1="12" x2="3" y2="12"></line>
+                      <line x1="21" y1="12" x2="23" y2="12"></line>
+                      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <span>Capacity: <span style="font-weight: 600; color: var(--slate-900);">500 kW</span></span>
+                  </div>
+                  <div style="display: flex; align-items: center; color: var(--slate-600); font-size: 0.875rem;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--brand-blue); margin-right: 0.5rem;">
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                      <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    <span>Location: <span style="font-weight: 600; color: var(--slate-900);">Fresno, CA</span></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Project 3 -->
+            <div class="project-card card" data-category="Commercial">
+              <div style="position: relative; height: 256px; overflow: hidden;">
+                <img src="https://images.unsplash.com/photo-1760246964044-1384f71665b9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBjb3Jwb3JhdGUlMjBvZmZpY2UlMjBidWlsZGluZyUyMGV4dGVyaW9yfGVufDF8fHx8MTc3MTUxNjc3NXww&ixlib=rb-4.1.0&q=80&w=1080" alt="TechPark Rooftop" class="card-image">
+                <div style="position: absolute; top: 1rem; right: 1rem; background: rgba(15, 23, 42, 0.8); color: white; font-size: 0.75rem; font-weight: bold; padding: 0.25rem 0.75rem; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.05em;">
+                  Commercial
+                </div>
+              </div>
+              <div class="card-content">
+                <h3 style="font-size: 1.25rem; font-weight: bold; color: var(--slate-900); margin-bottom: 0.5rem;">TechPark Rooftop</h3>
+                <div style="margin-top: 1rem;">
+                  <div style="display: flex; align-items: center; color: var(--slate-600); font-size: 0.875rem; margin-bottom: 0.5rem;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--brand-blue); margin-right: 0.5rem;">
+                      <circle cx="12" cy="12" r="5"></circle>
+                      <line x1="12" y1="1" x2="12" y2="3"></line>
+                      <line x1="12" y1="21" x2="12" y2="23"></line>
+                      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                      <line x1="1" y1="12" x2="3" y2="12"></line>
+                      <line x1="21" y1="12" x2="23" y2="12"></line>
+                      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <span>Capacity: <span style="font-weight: 600; color: var(--slate-900);">2.5 MW</span></span>
+                  </div>
+                  <div style="display: flex; align-items: center; color: var(--slate-600); font-size: 0.875rem;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--brand-blue); margin-right: 0.5rem;">
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                      <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    <span>Location: <span style="font-weight: 600; color: var(--slate-900);">Austin, TX</span></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Project 4 -->
+            <div class="project-card card" data-category="Utility">
+              <div style="position: relative; height: 256px; overflow: hidden;">
+                <img src="https://images.unsplash.com/photo-1638068110878-c412de93e0a5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxyZW5ld2FibGUlMjBlbmVyZ3klMjB3aW5kJTIwc29sYXJ8ZW58MXx8fHwxNzcxNTc4MDg0fDA&ixlib=rb-4.1.0&q=80&w=1080" alt="Wind & Solar Hybrid" class="card-image">
+                <div style="position: absolute; top: 1rem; right: 1rem; background: rgba(15, 23, 42, 0.8); color: white; font-size: 0.75rem; font-weight: bold; padding: 0.25rem 0.75rem; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.05em;">
+                  Utility
+                </div>
+              </div>
+              <div class="card-content">
+                <h3 style="font-size: 1.25rem; font-weight: bold; color: var(--slate-900); margin-bottom: 0.5rem;">Wind & Solar Hybrid</h3>
+                <div style="margin-top: 1rem;">
+                  <div style="display: flex; align-items: center; color: var(--slate-600); font-size: 0.875rem; margin-bottom: 0.5rem;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--brand-blue); margin-right: 0.5rem;">
+                      <circle cx="12" cy="12" r="5"></circle>
+                      <line x1="12" y1="1" x2="12" y2="3"></line>
+                      <line x1="12" y1="21" x2="12" y2="23"></line>
+                      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                      <line x1="1" y1="12" x2="3" y2="12"></line>
+                      <line x1="21" y1="12" x2="23" y2="12"></line>
+                      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <span>Capacity: <span style="font-weight: 600; color: var(--slate-900);">10 MW</span></span>
+                  </div>
+                  <div style="display: flex; align-items: center; color: var(--slate-600); font-size: 0.875rem;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--brand-blue); margin-right: 0.5rem;">
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                      <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    <span>Location: <span style="font-weight: 600; color: var(--slate-900);">Palm Springs, CA</span></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Project 5 -->
+            <div class="project-card card" data-category="Public Sector">
+              <div style="position: relative; height: 256px; overflow: hidden;">
+                <img src="https://images.unsplash.com/photo-1635424709961-f3a150459ad4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzb2xhciUyMHBhbmVscyUyMGluc3RhbGxhdGlvbiUyMHJvb2Z0b3B8ZW58MXx8fHwxNzcxNTY2OTk3fDA&ixlib=rb-4.1.0&q=80&w=1080" alt="School District Solar" class="card-image">
+                <div style="position: absolute; top: 1rem; right: 1rem; background: rgba(15, 23, 42, 0.8); color: white; font-size: 0.75rem; font-weight: bold; padding: 0.25rem 0.75rem; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.05em;">
+                  Public Sector
+                </div>
+              </div>
+              <div class="card-content">
+                <h3 style="font-size: 1.25rem; font-weight: bold; color: var(--slate-900); margin-bottom: 0.5rem;">School District Solar</h3>
+                <div style="margin-top: 1rem;">
+                  <div style="display: flex; align-items: center; color: var(--slate-600); font-size: 0.875rem; margin-bottom: 0.5rem;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--brand-blue); margin-right: 0.5rem;">
+                      <circle cx="12" cy="12" r="5"></circle>
+                      <line x1="12" y1="1" x2="12" y2="3"></line>
+                      <line x1="12" y1="21" x2="12" y2="23"></line>
+                      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                      <line x1="1" y1="12" x2="3" y2="12"></line>
+                      <line x1="21" y1="12" x2="23" y2="12"></line>
+                      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <span>Capacity: <span style="font-weight: 600; color: var(--slate-900);">850 kW</span></span>
+                  </div>
+                  <div style="display: flex; align-items: center; color: var(--slate-600); font-size: 0.875rem;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--brand-blue); margin-right: 0.5rem;">
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                      <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    <span>Location: <span style="font-weight: 600; color: var(--slate-900);">Denver, CO</span></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Project 6 -->
+            <div class="project-card card" data-category="Utility">
+              <div style="position: relative; height: 256px; overflow: hidden;">
+                <img src="https://images.unsplash.com/photo-1670519808965-16b9b2f724af?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzb2xhciUyMGZhcm0lMjBncmVlbiUyMGVuZXJneXxlbnwxfHx8fDE3NzE1NTk2NDR8MA&ixlib=rb-4.1.0&q=80&w=1080" alt="Desert Sun Project" class="card-image">
+                <div style="position: absolute; top: 1rem; right: 1rem; background: rgba(15, 23, 42, 0.8); color: white; font-size: 0.75rem; font-weight: bold; padding: 0.25rem 0.75rem; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.05em;">
+                  Utility
+                </div>
+              </div>
+              <div class="card-content">
+                <h3 style="font-size: 1.25rem; font-weight: bold; color: var(--slate-900); margin-bottom: 0.5rem;">Desert Sun Project</h3>
+                <div style="margin-top: 1rem;">
+                  <div style="display: flex; align-items: center; color: var(--slate-600); font-size: 0.875rem; margin-bottom: 0.5rem;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--brand-blue); margin-right: 0.5rem;">
+                      <circle cx="12" cy="12" r="5"></circle>
+                      <line x1="12" y1="1" x2="12" y2="3"></line>
+                      <line x1="12" y1="21" x2="12" y2="23"></line>
+                      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                      <line x1="1" y1="12" x2="3" y2="12"></line>
+                      <line x1="21" y1="12" x2="23" y2="12"></line>
+                      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <span>Capacity: <span style="font-weight: 600; color: var(--slate-900);">5 MW</span></span>
+                  </div>
+                  <div style="display: flex; align-items: center; color: var(--slate-600); font-size: 0.875rem;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--brand-blue); margin-right: 0.5rem;">
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                      <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    <span>Location: <span style="font-weight: 600; color: var(--slate-900);">Nevada</span></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-grid">
+          <div class="footer-section">
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                      <a href="index.html" class="logo" aria-label="Univolt Power Home">
+          <img src="im6.jpeg" alt="Univolt Power" class="site-logo" style="box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+        </a>
+            </div>
+            <p>Leading the way in sustainable energy solutions. We provide end-to-end solar engineering, procurement, and construction services.</p>
+            <div class="social-links">
+              <a href="#"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
+              <a href="#"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a>
+              <a href="#"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a>
+              <a href="#"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
+            </div>
+          </div>
+
+          <div class="footer-section">
+            <h3>Quick Links</h3>
+            <ul>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="about.html">About</a></li>
+              <li><a href="products.html">Products</a></li>
+              <li><a href="solutions.html">Services</a></li>
+              <li><a href="projects.html">Projects</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-section">
+            <h3>Our Services</h3>
+            <ul>
+              <li><a href="solutions.html">Commercial Solar</a></li>
+              <li><a href="solutions.html">Residential Installation</a></li>
+              <li><a href="solutions.html">Maintenance & Repairs</a></li>
+              <li><a href="solutions.html">Battery Storage</a></li>
+              <li><a href="solutions.html">Consulting</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-section">
+            <h3>Contact Us</h3>
+            <ul style="font-size: 0.875rem;">
+              <li style="display: flex; align-items: start; margin-bottom: 0.75rem;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--brand-blue); margin-right: 0.5rem; flex-shrink: 0;">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                <span>Nairobi<br>kenya</span>
+              </li>
+              <li style="display: flex; align-items: center; margin-bottom: 0.75rem;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--brand-blue); margin-right: 0.5rem;">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                </svg>
+                <span>0708345963</span>
+              </li>
+              <li style="display: flex; align-items: center;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--brand-blue); margin-right: 0.5rem;">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                  <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+                <span>univoltpower@gmail.com</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="footer-bottom">
+          <p>&copy; 2026 Univolt Power. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
