@@ -1,5 +1,11 @@
 # Univolt Power - HTML/CSS/JavaScript Website
 
+<<<<<<< HEAD
+=======
+## ✅ Conversion Complete!
+
+
+>>>>>>> 1b606f721f3683b7c1de4eef5f0c5fd006e58587
 
 ## 📁 Files Included
 
@@ -159,3 +165,10 @@ your-website-folder/
 
 
 
+<<<<<<< HEAD
+=======
+ 
+**Converted:** HTML + CSS + Vanilla JavaScript
+
+Enjoy your new static website! 🎉
+>>>>>>> 1b606f721f3683b7c1de4eef5f0c5fd006e58587
