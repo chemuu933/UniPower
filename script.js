@@ -1,4 +1,4 @@
-// Univolt Power - Main JavaScript
+
 
 // Cart Management
 class CartManager {
