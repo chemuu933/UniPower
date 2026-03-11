@@ -114,10 +114,12 @@
     <main class="main-content">
 
       <!-- Page Header -->
-      <section class="page-header" style="background: var(--brand-blue);">
+      <section class="page-header">
+        <div class="page-header-overlay"></div>
+        <img src="Resources Image 3.jpg" alt="Resources" class="page-header-image">
         <div class="page-header-content">
           <h1>Resources</h1>
-          <p style="color: var(--slate-200);">Knowledge and tools to empower your solar journey.</p>
+          <p>Guides, downloads, and technical information to help you make informed decisions.</p>
         </div>
       </section>
 
@@ -172,7 +174,6 @@
                   </div>
                 </div>
                 <div style="padding: 1.5rem;">
-                  <!-- FIX: closed </h3> tag was missing -->
                   <h3 style="font-size: 1.25rem; font-weight: bold; color: var(--slate-900); margin-bottom: 0.5rem;">Which backup power solution is best for your home?</h3>
                   <p style="color: var(--slate-600); margin-bottom: 1rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
                     In Kenya, reliable electricity is essential for homes, farms, and businesses. Power interruptions, rising fuel costs, and increasing electricity demand have led many property owners to search for dependable backup power solutions.
@@ -378,8 +379,11 @@
         <div class="footer-grid">
 
           <div class="footer-section">
-            <h3>Univolt Power</h3>
-            <p style="font-size: 0.875rem; line-height: 1.7; color: var(--slate-400);">
+            <!-- UPDATED: Logo image replaces "Univolt Power" text -->
+            <a href="index.html" class="logo" aria-label="Univolt Power Home">
+              <img src="im6.jpeg" alt="Univolt Power" class="site-logo" style="box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+            </a>
+            <p style="font-size: 0.875rem; line-height: 1.7; color: var(--slate-400); margin-top: 1rem;">
               Kenya's trusted solar energy partner — providing clean, reliable, and affordable power solutions.
             </p>
             <div class="social-links" style="margin-top: 1rem;">
@@ -436,7 +440,8 @@
                   <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                   <polyline points="22,6 12,13 2,6"></polyline>
                 </svg>
-                <span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a3d6cdcad5cccfd7d3ccd4c6d1e3c4cec2cacf8dc0ccce">[email&#160;protected]</a></span>
+                <!-- UPDATED: Replaced obfuscated email with univolt@gmail.com -->
+                <span><a href="mailto:univolt@gmail.com" style="color: inherit;">univolt@gmail.com</a></span>
               </li>
             </ul>
           </div>
@@ -445,7 +450,7 @@
 
         <div class="footer-bottom">
           <p>&copy; 2026 Univolt Power. All rights reserved.</p>
-           </div>
+        </div>
       </div>
     </footer>
   </div>
