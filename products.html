@@ -115,7 +115,7 @@
       <!-- Page Header -->
       <section class="page-header" style="min-height: 400px;">
         <div class="page-header-overlay"></div>
-        <img src="Product Image.jpg" alt="Our Products" class="page-header-image" style="width: 100%; height: 100%; object-fit: cover; object-position: center;" loading="eager">
+        <img src="image/Product Image.jpg" alt="Our Products" class="page-header-image" style="width: 100%; height: 100%; object-fit: cover; object-position: center;" loading="eager">
         <div class="page-header-content">
           <h1>Our Products</h1>
           <p>High-quality components for your energy independence.</p>
@@ -138,8 +138,8 @@
           <div class="grid grid-3">
             <!-- Product 1 -->
             <div class="product-card card" data-category="Solar Panels" onclick="window.location.href='productdetail.html'" style="cursor: pointer;">
-              <div style="position: relative; height: 256px; overflow: hidden;">
-                <img src="image1.png" alt="600W Jinko Monocrystalline solar panel" class="card-image">
+              <div style="position: relative; height: 320px; overflow: hidden;">
+                <img src="image/image1.png" alt="600W Jinko Monocrystalline solar panel" class="card-image">
                 <div style="position: absolute; top: 0.75rem; right: 0.75rem; background: rgba(255,255,255,0.9); backdrop-filter: blur(4px); padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: bold; color: var(--brand-blue); box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
                   Solar Panels
                 </div>
@@ -147,8 +147,8 @@
               <div class="card-content">
                 <h3 style="font-size: 1.125rem; font-weight: bold; margin-bottom: 0.5rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">600W Jinko Monocrystalline  Panel</h3>
                 <div style="display: flex; justify-content: space-between; align-items: end;">
-                  <span style="font-size: 1.5rem; font-weight: bold; color: var(--brand-blue);">$249.99</span>
-                  <button class="btn-add-cart" onclick="event.stopPropagation(); cart.addToCart({id: 1, name: '600W Jinko Monocrystalline Panel', price: 249.99, category: 'Solar Panels', image: 'image1.png'})">
+                  <span style="font-size: 1.5rem; font-weight: bold; color: var(--brand-blue);">Ksh 249,900.00</span>
+                  <button class="btn-add-cart" onclick="event.stopPropagation(); cart.addToCart({id: 1, name: '600W Jinko Monocrystalline Panel', price: 249.99, category: 'Solar Panels', image: 'image/image1.png'})">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <circle cx="9" cy="21" r="1"></circle>
                       <circle cx="20" cy="21" r="1"></circle>
@@ -162,8 +162,8 @@
 
             <!-- Product 2 -->
             <div class="product-card card" data-category="Batteries" onclick="window.location.href='productdetail.html'" style="cursor: pointer;">
-              <div style="position: relative; height: 256px; overflow: hidden;">
-                <img src="Image3.png" alt="10kWh Battery System" class="card-image">
+              <div style="position: relative; height: 320px; overflow: hidden;">
+                <img src="image/Image3.png" alt="10kWh Battery System" class="card-image">
                 <div style="position: absolute; top: 0.75rem; right: 0.75rem; background: rgba(255,255,255,0.9); backdrop-filter: blur(4px); padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: bold; color: var(--brand-blue); box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
                   Batteries
                 </div>
@@ -172,7 +172,7 @@
                 <h3 style="font-size: 1.125rem; font-weight: bold; margin-bottom: 0.5rem;"> Dyness 5kWh Lithium Battery </h3>
                 <div style="display: flex; justify-content: space-between; align-items: end;">
                   <span style="font-size: 1.5rem; font-weight: bold; color: var(--brand-blue);">$6,999.00</span>
-                  <button class="btn-add-cart" onclick="event.stopPropagation(); cart.addToCart({id: 2, name: ' Dyness 5kWh Lithium Battery ', price: 6999.00, category: 'Batteries', image: 'Image3.png'})">
+                  <button class="btn-add-cart" onclick="event.stopPropagation(); cart.addToCart({id: 2, name: ' Dyness 5kWh Lithium Battery ', price: 6999.00, category: 'Batteries', image: 'image/Image3.png'})">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <circle cx="9" cy="21" r="1"></circle>
                       <circle cx="20" cy="21" r="1"></circle>
@@ -186,8 +186,8 @@
 
             <!-- Product 3 -->
             <div class="product-card card" data-category="Inverters" onclick="window.location.href='productdetail.html'" style="cursor: pointer;">
-              <div style="position: relative; height: 256px; overflow: hidden;">
-                <img src="Image4.png" alt="5kW Hybrid Inverter" class="card-image">
+              <div style="position: relative; height: 320px; overflow: hidden;">
+                <img src="image/Image4.png" alt="5kW Hybrid Inverter" class="card-image">
                 <div style="position: absolute; top: 0.75rem; right: 0.75rem; background: rgba(255,255,255,0.9); backdrop-filter: blur(4px); padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: bold; color: var(--brand-blue); box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
                   Inverters
                 </div>
@@ -195,8 +195,156 @@
               <div class="card-content">
                 <h3 style="font-size: 1.125rem; font-weight: bold; margin-bottom: 0.5rem;"> Solis 8KW Hybrid Inverter</h3>
                 <div style="display: flex; justify-content: space-between; align-items: end;">
-                  <span style="font-size: 1.5rem; font-weight: bold; color: var(--brand-blue);">$1,299.00</span>
-                  <button class="btn-add-cart" onclick="event.stopPropagation(); cart.addToCart({id: 3, name: ' Solis 8KW Hybrid Inverter', price: 1299.00, category: 'Inverters', image: 'Image4.png'})">
+                  <span style="font-size: 1.5rem; font-weight: bold; color: var(--brand-blue);">Ksh 129,900.00</span>
+                  <button class="btn-add-cart" onclick="event.stopPropagation(); cart.addToCart({id: 3, name: ' Solis 8KW Hybrid Inverter', price: 1299.00, category: 'Inverters', image: 'image/Image4.png'})">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="9" cy="21" r="1"></circle>
+                      <circle cx="20" cy="21" r="1"></circle>
+                      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    Add
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Product 8 -->
+            <div class="product-card card" data-category="Solar Panels" onclick="window.location.href='productdetail.html'" style="cursor: pointer;">
+              <div style="position: relative; height: 320px; overflow: hidden;">
+                <img src="image/image7.png" alt="JA 700 WATTS bifacial N -type double glass solar panels JAM66D46-700/LB" class="card-image">
+                <div style="position: absolute; top: 0.75rem; right: 0.75rem; background: rgba(255,255,255,0.9); backdrop-filter: blur(4px); padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: bold; color: var(--brand-blue); box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                  Solar Panels
+                </div>
+              </div>
+              <div class="card-content">
+                <h3 style="font-size: 1.125rem; font-weight: bold; margin-bottom: 0.5rem;">JA 700 WATTS bifacial N -type double glass solar panels JAM66D46-700/LB/h3>
+                <div style="display: flex; justify-content: space-between; align-items: end;">
+                  <span style="font-size: 1.5rem; font-weight: bold; color: var(--brand-blue);">Ksh 19,500.00
+
+                  </span>
+                  <button class="btn-add-cart" onclick="event.stopPropagation(); cart.addToCart({id: 8, name: 'JINKO 585 WATTS bifacial solar panels JKM585M-72HL4-V', price: 425.99, category: 'Solar Panels', image: 'image/image.png'})">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="9" cy="21" r="1"></circle>
+                      <circle cx="20" cy="21" r="1"></circle>
+                      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    Add
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Product 9 -->
+            <div class="product-card card" data-category="Solar Panels" onclick="window.location.href='productdetail.html'" style="cursor: pointer;">
+              <div style="position: relative; height: 320px; overflow: hidden;">
+                <img src="image/image6.png" alt="JINKO 585 WATTS bifacial solar panels" class="card-image">
+                <div style="position: absolute; top: 0.75rem; right: 0.75rem; background: rgba(255,255,255,0.9); backdrop-filter: blur(4px); padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: bold; color: var(--brand-blue); box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                  Solar Panels
+                </div>
+              </div>
+              <div class="card-content">
+                <h3 style="font-size: 1.125rem; font-weight: bold; margin-bottom: 0.5rem;">JINKO 585 WATTS bifacial solar panels JKM585M-72HL4-V</h3>
+                <div style="display: flex; justify-content: space-between; align-items: end;">
+                  <span style="font-size: 1.5rem; font-weight: bold; color: var(--brand-blue);">Ksh 16,380.00
+
+                  </span>
+                  <button class="btn-add-cart" onclick="event.stopPropagation(); cart.addToCart({id: 9, name: 'JINKO 585 WATTS bifacial solar panels JKM585M-72HL4-V', price: 425.99, category: 'Solar Panels', image: 'image/image.png'})">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="9" cy="21" r="1"></circle>
+                      <circle cx="20" cy="21" r="1"></circle>
+                      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    Add
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Product 10 -->
+            <div class="product-card card" data-category="Solar Panels" onclick="window.location.href='productdetail.html'" style="cursor: pointer;">
+              <div style="position: relative; height: 320px; overflow: hidden;">
+                <img src="image/image8.png" alt="Trina Solar 705 Watts Monocrystalline Solar Panel | Bifacial" class="card-image">
+                <div style="position: absolute; top: 0.75rem; right: 0.75rem; background: rgba(255,255,255,0.9); backdrop-filter: blur(4px); padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: bold; color: var(--brand-blue); box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                  Solar Panels
+                </div>
+              </div>
+              <div class="card-content">
+                <h3 style="font-size: 1.125rem; font-weight: bold; margin-bottom: 0.5rem;">Trina Solar 705 Watts Monocrystalline Solar Panel | Bifacial</h3>
+                <div style="display: flex; justify-content: space-between; align-items: end;">
+                  <span style="font-size: 1.5rem; font-weight: bold; color: var(--brand-blue);">Ksh 19,740.00</span>
+                  <button class="btn-add-cart" onclick="event.stopPropagation(); cart.addToCart({id: 10, name: 'Trina Solar 705 Watts Monocrystalline Solar Panel | Bifacial', price: 425.99, category: 'Solar Panels', image: 'image/image.png'})">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="9" cy="21" r="1"></circle>
+                      <circle cx="20" cy="21" r="1"></circle>
+                      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    Add
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Product 11 -->
+            <div class="product-card card" data-category="Solar Panels" onclick="window.location.href='productdetail.html'" style="cursor: pointer;">
+              <div style="position: relative; height: 320px; overflow: hidden;">
+                <img src="image/image9.png" alt="Dayliff 200W monocrystalline Solar panels" class="card-image">
+                <div style="position: absolute; top: 0.75rem; right: 0.75rem; background: rgba(255,255,255,0.9); backdrop-filter: blur(4px); padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: bold; color: var(--brand-blue); box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                  Solar Panels
+                </div>
+              </div>
+              <div class="card-content">
+                <h3 style="font-size: 1.125rem; font-weight: bold; margin-bottom: 0.5rem;">Dayliff 200W monocrystalline Solar panels</h3>
+                <div style="display: flex; justify-content: space-between; align-items: end;">
+                  <span style="font-size: 1.5rem; font-weight: bold; color: var(--brand-blue);">Ksh 12,000.00</span>
+                  <button class="btn-add-cart" onclick="event.stopPropagation(); cart.addToCart({id: 11, name: 'Dayliff 200W monocrystalline Solar panels', price: 425.99, category: 'Solar Panels', image: 'image/image.png'})">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="9" cy="21" r="1"></circle>
+                      <circle cx="20" cy="21" r="1"></circle>
+                      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    Add
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Product 12 -->
+            <div class="product-card card" data-category="Solar Panels" onclick="window.location.href='productdetail.html'" style="cursor: pointer;">
+              <div style="position: relative; height: 320px; overflow: hidden;">
+                <img src="image/image10.png" alt="Longi Solar 615 Watts Monocrystalline Solar Panel | Bifacial" class="card-image">
+                <div style="position: absolute; top: 0.75rem; right: 0.75rem; background: rgba(255,255,255,0.9); backdrop-filter: blur(4px); padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: bold; color: var(--brand-blue); box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                  Solar Panels
+                </div>
+              </div>
+              <div class="card-content">
+                <h3 style="font-size: 1.125rem; font-weight: bold; margin-bottom: 0.5rem;">Longi Solar 615 Watts Monocrystalline Solar Panel | Bifacial</h3>
+                <div style="display: flex; justify-content: space-between; align-items: end;">
+                  <span style="font-size: 1.5rem; font-weight: bold; color: var(--brand-blue);">Ksh 17,220.00</span>
+                  <button class="btn-add-cart" onclick="event.stopPropagation(); cart.addToCart({id: 12, name: 'Longi Solar 615 Watts Monocrystalline Solar Panel | Bifacial', price: 425.99, category: 'Solar Panels', image: 'image/image.png'})">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="9" cy="21" r="1"></circle>
+                      <circle cx="20" cy="21" r="1"></circle>
+                      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    Add
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Product 13 -->
+            <div class="product-card card" data-category="Solar Panels" onclick="window.location.href='productdetail.html'" style="cursor: pointer;">
+              <div style="position: relative; height: 320px; overflow: hidden;">
+                <img src="image/image11.png" alt="Longi Solar 620 Watts Monocrystalline Solar Panel | Bifacial" class="card-image">
+                <div style="position: absolute; top: 0.75rem; right: 0.75rem; background: rgba(255,255,255,0.9); backdrop-filter: blur(4px); padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: bold; color: var(--brand-blue); box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                  Solar Panels
+                </div>
+              </div>
+              <div class="card-content">
+                <h3 style="font-size: 1.125rem; font-weight: bold; margin-bottom: 0.5rem;">Longi Solar 620 Watts Monocrystalline Solar Panel | Bifacial</h3>
+                <div style="display: flex; justify-content: space-between; align-items: end;">
+                  <span style="font-size: 1.5rem; font-weight: bold; color: var(--brand-blue);">Ksh 17,360.00</span>
+                  <button class="btn-add-cart" onclick="event.stopPropagation(); cart.addToCart({id: 13, name: 'Longi Solar 620 Watts Monocrystalline Solar Panel | Bifacial', price: 425.99, category: 'Solar Panels', image: 'image/image.png'})">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <circle cx="9" cy="21" r="1"></circle>
                       <circle cx="20" cy="21" r="1"></circle>
@@ -210,7 +358,7 @@
 
             <!-- Product 4 -->
             <div class="product-card card" data-category="Accessories" onclick="window.location.href='productdetail.html'" style="cursor: pointer;">
-              <div style="position: relative; height: 256px; overflow: hidden;">
+              <div style="position: relative; height: 320px; overflow: hidden;">
                 <img src="https://images.unsplash.com/photo-1760246964044-1384f71665b9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBjb3Jwb3JhdGUlMjBvZmZpY2UlMjBidWlsZGluZyUyMGV4dGVyaW9yfGVufDF8fHx8MTc3MTUxNjc3NXww&ixlib=rb-4.1.0&q=80&w=1080" alt="EV Charger Station" class="card-image">
                 <div style="position: absolute; top: 0.75rem; right: 0.75rem; background: rgba(255,255,255,0.9); backdrop-filter: blur(4px); padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: bold; color: var(--brand-blue); box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
                   Accessories
@@ -234,8 +382,8 @@
 
             <!-- Product 5 -->
             <div class="product-card card" data-category="Solar Panels" onclick="window.location.href='productdetail.html'" style="cursor: pointer;">
-              <div style="position: relative; height: 256px; overflow: hidden;">
-                <img src="image2.png" alt="615W JA Monocrystalline Panel" class="card-image">
+              <div style="position: relative; height: 320px; overflow: hidden;">
+                <img src="image/image2.png" alt="615W JA Monocrystalline Panel" class="card-image">
                 <div style="position: absolute; top: 0.75rem; right: 0.75rem; background: rgba(255,255,255,0.9); backdrop-filter: blur(4px); padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: bold; color: var(--brand-blue); box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
                   Solar Panels
                 </div>
@@ -243,8 +391,8 @@
               <div class="card-content">
                 <h3 style="font-size: 1.125rem; font-weight: bold; margin-bottom: 0.5rem;">615W JA Monocrystalline Panel</h3>
                 <div style="display: flex; justify-content: space-between; align-items: end;">
-                  <span style="font-size: 1.5rem; font-weight: bold; color: var(--brand-blue);">$299.99</span>
-                  <button class="btn-add-cart" onclick="event.stopPropagation(); cart.addToCart({id: 5, name: '615W JA Monocrystalline Panel', price: 299.99, category: 'Solar Panels', image: 'image2.png'})">
+                  <span style="font-size: 1.5rem; font-weight: bold; color: var(--brand-blue);">Ksh 299,900.00</span>
+                  <button class="btn-add-cart" onclick="event.stopPropagation(); cart.addToCart({id: 5, name: '615W JA Monocrystalline Panel', price: 299.99, category: 'Solar Panels', image: 'image/image2.png'})">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <circle cx="9" cy="21" r="1"></circle>
                       <circle cx="20" cy="21" r="1"></circle>
@@ -257,8 +405,32 @@
             </div>
 
             <!-- Product 6 -->
+            <div class="product-card card" data-category="Solar Panels" onclick="window.location.href='productdetail.html'" style="cursor: pointer;">
+              <div style="position: relative; height: 320px; overflow: hidden;">
+                <img src="image/image5.png" alt="JA Solar 565 Watts Monocrystalline Solar Panel" class="card-image">
+                <div style="position: absolute; top: 0.25rem; right: 0.25rem; background: rgba(255,255,255,0.9); backdrop-filter: blur(4px); padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: bold; color: var(--brand-blue); box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                  Solar Panels
+                </div>
+              </div>
+              <div class="card-content">
+                <h3 style="font-size: 1.125rem; font-weight: bold; margin-bottom: 0.5rem;">JA Solar 565 Watts Monocrystalline Solar Panel | Bifacial</h3>
+                <div style="display: flex; justify-content: space-between; align-items: end;">
+                  <span style="font-size: 1.5rem; font-weight: bold; color: var(--brand-blue);">ksh 50,439.00</span>
+                  <button class="btn-add-cart" onclick="event.stopPropagation(); cart.addToCart({id: 6, name: 'JA Solar 565 Watts Monocrystalline Solar Panel | Bifacial', price: 389.99, category: 'Solar Panels', image: 'image/image5.png'})">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="9" cy="21" r="1"></circle>
+                      <circle cx="20" cy="21" r="1"></circle>
+                      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    Add
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Product 7 -->
             <div class="product-card card" data-category="Accessories" onclick="window.location.href='productdetail.html'" style="cursor: pointer;">
-              <div style="position: relative; height: 256px; overflow: hidden;">
+              <div style="position: relative; height: 320px; overflow: hidden;">
                 <img src="https://images.unsplash.com/photo-1635424709961-f3a150459ad4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzb2xhciUyMHBhbmVscyUyMGluc3RhbGxhdGlvbiUyMHJvb2Z0b3B8ZW58MXx8fHwxNzcxNTY2OTk3fDA&ixlib=rb-4.1.0&q=80&w=1080" alt="Smart Monitoring Hub" class="card-image">
                 <div style="position: absolute; top: 0.75rem; right: 0.75rem; background: rgba(255,255,255,0.9); backdrop-filter: blur(4px); padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: bold; color: var(--brand-blue); box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
                   Accessories
@@ -268,7 +440,7 @@
                 <h3 style="font-size: 1.125rem; font-weight: bold; margin-bottom: 0.5rem;">Smart Monitoring Hub</h3>
                 <div style="display: flex; justify-content: space-between; align-items: end;">
                   <span style="font-size: 1.5rem; font-weight: bold; color: var(--brand-blue);">$349.50</span>
-                  <button class="btn-add-cart" onclick="event.stopPropagation(); cart.addToCart({id: 6, name: 'Smart Monitoring Hub', price: 349.50, category: 'Accessories', image: 'https://images.unsplash.com/photo-1635424709961-f3a150459ad4?w=200'})">
+                  <button class="btn-add-cart" onclick="event.stopPropagation(); cart.addToCart({id: 7, name: 'Smart Monitoring Hub', price: 349.50, category: 'Accessories', image: 'https://images.unsplash.com/photo-1635424709961-f3a150459ad4?w=200'})">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <circle cx="9" cy="21" r="1"></circle>
                       <circle cx="20" cy="21" r="1"></circle>
