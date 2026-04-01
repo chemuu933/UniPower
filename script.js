@@ -1081,6 +1081,18 @@ function getProductById(id) {
 }
 
 /**
+ * Get related products based on category (excluding current product)
+ * @param {Object} currentProduct - Current product object
+ * @param {number} limit - Maximum number of related products to return
+ * @returns {Array} - Array of related product objects
+ */
+function getRelatedProducts(currentProduct, limit = 4) {
+  return productsData
+    .filter(p => p.category === currentProduct.category && p.id !== currentProduct.id)
+    .slice(0, limit);
+}
+
+/**
  * Format price with Ksh currency
  * @param {number} price - Price value
  * @returns {string} - Formatted price
@@ -1120,6 +1132,93 @@ function renderFeatures(features) {
       ${feature}
     </li>
   `).join('');
+}
+
+/**
+ * Render related products grid
+ * @param {Array} relatedProducts - Array of related product objects
+ * @returns {string} - HTML string
+ */
+function renderRelatedProducts(relatedProducts) {
+  if (relatedProducts.length === 0) return '';
+  
+  return `
+    <div class="pd-related-section">
+      <h3 class="pd-related-title">Related Products</h3>
+      <div class="pd-related-grid">
+        ${relatedProducts.map(relatedProduct => `
+          <div class="pd-related-card">
+            <div class="pd-related-image">
+              <img src="${relatedProduct.image}" alt="${relatedProduct.name}" loading="lazy">
+              <span class="pd-related-category">${relatedProduct.category}</span>
+            </div>
+            <div class="pd-related-info">
+              <h4 class="pd-related-name">${relatedProduct.name}</h4>
+              <div class="pd-related-price">${formatPrice(relatedProduct.price)}</div>
+              <div class="pd-related-stock ${relatedProduct.stock.toLowerCase().includes('in') ? 'in-stock' : 'out-of-stock'}">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                  <polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+                ${relatedProduct.stock}
+              </div>
+              <a href="productdetail.html?id=${relatedProduct.id}" class="pd-related-link">View Details</a>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+/**
+ * Handle datasheet download
+ * @param {number} productId - Product ID
+ */
+function handleDatasheetDownload(productId) {
+  const product = getProductById(productId);
+  if (!product) return;
+  
+  // Create a simple text-based datasheet
+  const datasheetContent = `
+PRODUCT DATASHEET - Univolt Power
+=====================================
+
+Product: ${product.name}
+Category: ${product.category}
+Price: ${formatPrice(product.price)}
+Stock Status: ${product.stock}
+
+DESCRIPTION:
+${product.description}
+
+SPECIFICATIONS:
+${Object.entries(product.specs).map(([key, value]) => `${key}: ${value}`).join('\n')}
+
+KEY FEATURES:
+${product.features.map((feature, index) => `${index + 1}. ${feature}`).join('\n')}
+
+For more information, contact:
+Univolt Power
+Email: univoltpower@gmail.com
+Phone: 0708345963
+Website: www.univoltpower.com
+
+Generated: ${new Date().toLocaleString()}
+  `.trim();
+  
+  // Create and download the file
+  const blob = new Blob([datasheetContent], { type: 'text/plain' });
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${product.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_datasheet.txt`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  window.URL.revokeObjectURL(url);
+  
+  cart.showToast('Datasheet downloaded successfully!');
 }
 
 /**
@@ -1186,6 +1285,7 @@ function renderProductDetail() {
   }
   
   const product = getProductById(productId);
+  const relatedProducts = getRelatedProducts(product);
   
   container.innerHTML = `
     <div class="product-detail">
@@ -1259,9 +1359,20 @@ function renderProductDetail() {
               </svg>
               Add to Cart
             </button>
+            <button class="pd-datasheet-btn" onclick="handleDatasheetDownload(${product.id})">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              Download Datasheet
+            </button>
           </div>
         </div>
       </div>
+      
+      <!-- Related Products Section -->
+      ${renderRelatedProducts(relatedProducts)}
     </div>
   `;
 }
