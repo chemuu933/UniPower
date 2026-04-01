@@ -365,7 +365,7 @@ const productsData = [
   },
   {
     id: 2,
-    name: 'Dyness 5kWh Lithium Battery',
+    name: 'Dyness  Battery',
     category: 'Batteries',
     price: 140000.00,
     image: 'image/Image3.png',
