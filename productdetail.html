@@ -3,52 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jinko Solar 600W Monocrystalline Panel</title>
+  <title>Product Detail - Univolt Power</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="page-wrapper">
-    <!-- Header (same as other pages) -->
-    <header class="header">
-      <div class="header-content">
-        <a href="index.html" class="logo" aria-label="Univolt Power Home">
-          <img src="logo.png" alt="Univolt Power" class="site-logo" />
-        </a>
+<div class="page-wrapper">
 
-        <nav class="nav-desktop">
-          <a href="index.html" class="nav-link">Home</a>
-          <a href="about.html" class="nav-link">About</a>
-          <a href="products.html" class="nav-link">Products</a>
-          <a href="solutions.html" class="nav-link">Solutions</a>
-          <a href="projects.html" class="nav-link">Projects</a>
-          <a href="resources.html" class="nav-link">Resources</a>
-          <a href="contact.html" class="nav-link">Contact</a>
-          <a href="getaquote.html" class="nav-link">Get Quote</a>
-        </nav>
-
-        <div class="header-actions">
-          <a href="getaquote.html" class="btn btn-primary" style="padding: 0.5rem 1.5rem; font-size: 0.875rem; margin-right: 1rem; display: none;">Get Quote</a>
-          
-          <button class="cart-button" onclick="cart.openCart()">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="9" cy="21" r="1"></circle>
-              <circle cx="20" cy="21" r="1"></circle>
-              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-            </svg>
-            <span id="cart-count" class="cart-count" style="display: none;">0</span>
-          </button>
-          
-          <button id="mobile-menu-btn" class="mobile-menu-btn" onclick="toggleMobileMenu()">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="3" y1="12" x2="21" y2="12"></line>
-              <line x1="3" y1="6" x2="21" y2="6"></line>
-              <line x1="3" y1="18" x2="21" y2="18"></line>
-            </svg>
-          </button>
-        </div>
-      </div>
-
-      <nav id="mobile-menu" class="nav-mobile">
+  <!-- ── HEADER ── -->
+  <header class="header">
+    <div class="header-content">
+      <a href="index.html" class="logo" aria-label="Univolt Power Home">
+        <img src="logo.png" alt="Univolt Power" class="site-logo" />
+      </a>
+      <nav class="nav-desktop">
         <a href="index.html" class="nav-link">Home</a>
         <a href="about.html" class="nav-link">About</a>
         <a href="products.html" class="nav-link">Products</a>
@@ -56,457 +23,148 @@
         <a href="projects.html" class="nav-link">Projects</a>
         <a href="resources.html" class="nav-link">Resources</a>
         <a href="contact.html" class="nav-link">Contact</a>
-        <a href="getaquote.html" class="nav-link">Get Quote</a>
+        <a href="getaquote.html" class="btn btn-primary pd-get-quote-nav">Get Quote</a>
       </nav>
-    </header>
-
-    <!-- Cart Drawer -->
-    <div id="cart-overlay" class="cart-overlay"></div>
-    <div id="cart-drawer" class="cart-drawer">
-      <div class="cart-header">
-        <h2 class="cart-title">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="9" cy="21" r="1"></circle>
-            <circle cx="20" cy="21" r="1"></circle>
-            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-          </svg>
-          Your Cart
-        </h2>
-        <button class="cart-close" onclick="cart.closeCart()">
+      <div class="header-actions">
+        <button class="cart-button" onclick="cart.openCart()">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
+            <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+          </svg>
+          <span id="cart-count" class="cart-count" style="display:none;">0</span>
+        </button>
+        <button id="mobile-menu-btn" class="mobile-menu-btn" onclick="toggleMobileMenu()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
           </svg>
         </button>
       </div>
-      
-      <div class="cart-items" id="cart-items"></div>
-      
-      <div id="cart-empty" class="cart-empty">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity: 0.2; margin: 0 auto 1rem;">
-          <circle cx="9" cy="21" r="1"></circle>
-          <circle cx="20" cy="21" r="1"></circle>
-          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+    </div>
+    <nav id="mobile-menu" class="nav-mobile">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="about.html" class="nav-link">About</a>
+      <a href="products.html" class="nav-link">Products</a>
+      <a href="solutions.html" class="nav-link">Solutions</a>
+      <a href="projects.html" class="nav-link">Projects</a>
+      <a href="resources.html" class="nav-link">Resources</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+      <a href="getaquote.html" class="nav-link">Get Quote</a>
+    </nav>
+  </header>
+
+  <!-- ── CART DRAWER ── -->
+  <div id="cart-overlay" class="cart-overlay"></div>
+  <div id="cart-drawer" class="cart-drawer">
+    <div class="cart-header">
+      <h2 class="cart-title">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
         </svg>
-        <p>Your cart is empty.</p>
-        <button style="margin-top: 1rem; color: var(--brand-blue); font-weight: 500;" onclick="cart.closeCart()">
-          Start Shopping
-        </button>
-      </div>
-      
-      <div class="cart-footer">
-        <div class="cart-total">
-          <span class="cart-total-label">Total</span>
-          <span id="cart-total" class="cart-total-amount">$0.00</span>
-        </div>
-        <button id="checkout-btn" class="btn-checkout" onclick="handleCheckout()">Checkout</button>
-      </div>
+        Your Cart
+      </h2>
+      <button class="cart-close" onclick="cart.closeCart()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
     </div>
-
-    <!-- Toast Notification -->
-    <div id="toast" class="toast success">
-      <svg class="toast-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+    <div class="cart-items" id="cart-items"></div>
+    <div id="cart-empty" class="cart-empty">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:.2;margin:0 auto 1rem;display:block;">
+        <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
       </svg>
-      <span id="toast-message" class="toast-message"></span>
+      <p>Your cart is empty.</p>
+      <button class="pd-start-shopping" onclick="cart.closeCart()">Start Shopping</button>
     </div>
-
-    <!-- Main Content -->
-    <main class="main-content">
-      <!-- Breadcrumb -->
-      <section style="background: white; padding: 1.5rem 0; border-bottom: 1px solid var(--slate-200);">
-        <div class="container">
-          <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: var(--slate-600);">
-            <a href="index.html" style="color: var(--slate-600); transition: color 0.2s;">Home</a>
-            <span>/</span>
-            <a href="products.html" style="color: var(--slate-600); transition: color 0.2s;">Products</a>
-            <span>/</span>
-            <span style="color: var(--slate-900); font-weight: 500;">600W Jinko Monocrystalline Solar Panel</span>
-          </div>
-        </div>
-      </section>
-
-      <!-- Product Detail -->
-      <section class="section" style="background: white;">
-        <div class="container">
-          <div class="grid grid-2" style="gap: 4rem; align-items: start;">
-            
-            <!-- Product Image -->
-            <div>
-              <div style="background: var(--slate-100); border-radius: 1rem; overflow: hidden; aspect-ratio: 1; margin-bottom: 1rem;">
-                <img src="image/Image3.png" alt="10kWh Battery System" style="width: 100%; height: 100%; object-fit: cover;">
-              </div>
-              
-              <!-- Thumbnail Gallery (Optional) -->
-              <div class="grid grid-4" style="gap: 0.5rem;">
-                <div style="background: var(--slate-200); aspect-ratio: 1; border-radius: 0.5rem; cursor: pointer; border: 2px solid var(--brand-blue);"></div>
-                <div style="background: var(--slate-200); aspect-ratio: 1; border-radius: 0.5rem; cursor: pointer;"></div>
-                <div style="background: var(--slate-200); aspect-ratio: 1; border-radius: 0.5rem; cursor: pointer;"></div>
-                <div style="background: var(--slate-200); aspect-ratio: 1; border-radius: 0.5rem; cursor: pointer;"></div>
-              </div>
-            </div>
-
-            <!-- Product Info -->
-            <div>
-              <div style="display: inline-block; background: rgba(46, 52, 127, 0.1); color: var(--brand-blue); padding: 0.25rem 0.75rem; border-radius: 0.25rem; font-size: 0.875rem; font-weight: 600; margin-bottom: 1rem;">
-                Solar Panels
-              </div>
-              
-              <h1 style="font-size: 2.5rem; font-weight: bold; color: var(--slate-900); margin-bottom: 1rem;">600W JA Monocrystalline Solar Panel</h1>
-              
-              <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;">
-                <div style="font-size: 2.5rem; font-weight: bold; color: var(--brand-blue);">$249.99</div>
-                <div style="background: var(--green-100); color: var(--green-600); padding: 0.25rem 0.75rem; border-radius: 0.25rem; font-size: 0.875rem; font-weight: 600;">
-                  In Stock
-                </div>
-              </div>
-
-              <p style="color: var(--slate-600); line-height: 1.8; margin-bottom: 2rem;">
-                High-efficiency monocrystalline solar panel with superior performance in low-light conditions. Featuring premium quality silicon cells and robust aluminum frame, this panel is perfect for residential and commercial installations. Backed by 25-year performance warranty and 10-year product warranty.
-              </p>
-
-              <!-- Key Features -->
-              <div style="background: var(--slate-50); padding: 1.5rem; border-radius: 0.75rem; margin-bottom: 2rem;">
-                <h3 style="font-weight: bold; color: var(--slate-900); margin-bottom: 1rem;">Key Features</h3>
-                <ul style="list-style: none; display: grid; gap: 0.75rem;">
-                  <li style="display: flex; align-items: start;">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--green-500); margin-right: 0.75rem; flex-shrink: 0; margin-top: 0.125rem;">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                    <span style="color: var(--slate-700);">600W Maximum Power Output</span>
-                  </li>
-                  <li style="display: flex; align-items: start;">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--green-500); margin-right: 0.75rem; flex-shrink: 0; margin-top: 0.125rem;">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                    <span style="color: var(--slate-700);">20.5% Module Efficiency</span>
-                  </li>
-                  <li style="display: flex; align-items: start;">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--green-500); margin-right: 0.75rem; flex-shrink: 0; margin-top: 0.125rem;">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                    <span style="color: var(--slate-700);">IP68 Rated Junction Box</span>
-                  </li>
-                  <li style="display: flex; align-items: start;">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--green-500); margin-right: 0.75rem; flex-shrink: 0; margin-top: 0.125rem;">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                    <span style="color: var(--slate-700);">Certified IEC/TUV/CE/UL</span>
-                  </li>
-                  <li style="display: flex; align-items: start;">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--green-500); margin-right: 0.75rem; flex-shrink: 0; margin-top: 0.125rem;">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                    <span style="color: var(--slate-700);">25-Year Linear Power Warranty</span>
-                  </li>
-                </ul>
-              </div>
-
-              <!-- Actions -->
-              <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
-                <button onclick="cart.addToCart({id: 2, name: '10kWh Battery System', price: 6999.00, category: 'Batteries', image: 'image/Image3.png'})" class="btn btn-primary" style="flex: 1; display: flex; align-items: center; justify-center; gap: 0.5rem; padding: 1rem;">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="9" cy="21" r="1"></circle>
-                    <circle cx="20" cy="21" r="1"></circle>
-                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                  </svg>
-                  Add to Cart
-                </button>
-                <a href="getaquote.html" class="btn btn-secondary" style="padding: 1rem 2rem; background: white; border: 2px solid var(--brand-blue); color: var(--brand-blue);">
-                  Request Quote
-                </a>
-              </div>
-
-              <!-- Additional Info -->
-              <div style="border-top: 1px solid var(--slate-200); padding-top: 1.5rem;">
-                <p style="color: var(--slate-600); font-size: 0.875rem; margin-bottom: 0.5rem;">
-                  <strong>SKU:</strong> SP-600W-MONO
-                </p>
-                <p style="color: var(--slate-600); font-size: 0.875rem; margin-bottom: 0.5rem;">
-                  <strong>Category:</strong> Solar Panels
-                </p>
-                <p style="color: var(--slate-600); font-size: 0.875rem;">
-                  <strong>Tags:</strong> Monocrystalline, High Efficiency, Residential, Commercial
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Tabs: Specifications & Downloads -->
-      <section class="section" style="background: var(--slate-50);">
-        <div class="container">
-          <div class="card" style="padding: 2rem;">
-            
-            <!-- Tab Headers -->
-            <div style="border-bottom: 2px solid var(--slate-200); margin-bottom: 2rem;">
-              <div style="display: flex; gap: 2rem;">
-                <button onclick="showTab('specifications')" id="tab-specifications" style="padding: 1rem 0; font-weight: 600; color: var(--brand-blue); border-bottom: 2px solid var(--brand-blue); margin-bottom: -2px; background: none; cursor: pointer;">
-                  Specifications
-                </button>
-                <button onclick="showTab('downloads')" id="tab-downloads" style="padding: 1rem 0; font-weight: 600; color: var(--slate-600); background: none; cursor: pointer;">
-                  Downloads
-                </button>
-                <button onclick="showTab('warranty')" id="tab-warranty" style="padding: 1rem 0; font-weight: 600; color: var(--slate-600); background: none; cursor: pointer;">
-                  Warranty
-                </button>
-              </div>
-            </div>
-
-            <!-- Tab Content: Specifications -->
-            <div id="content-specifications" class="tab-content">
-              <h3 style="font-size: 1.5rem; font-weight: bold; color: var(--slate-900); margin-bottom: 1.5rem;">Technical Specifications</h3>
-              
-              <div class="grid grid-2" style="gap: 2rem;">
-                <div>
-                  <h4 style="font-weight: bold; color: var(--slate-900); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--slate-200);">Electrical Data (STC)</h4>
-                  <table style="width: 100%; border-collapse: collapse;">
-                    <tr style="border-bottom: 1px solid var(--slate-100);">
-                      <td style="padding: 0.75rem 0; color: var(--slate-600);">Maximum Power (Pmax)</td>
-                      <td style="padding: 0.75rem 0; font-weight: 600; text-align: right;">340W</td>
-                    </tr>
-                    <tr style="border-bottom: 1px solid var(--slate-100);">
-                      <td style="padding: 0.75rem 0; color: var(--slate-600);">Voltage at Pmax (Vmp)</td>
-                      <td style="padding: 0.75rem 0; font-weight: 600; text-align: right;">37.2V</td>
-                    </tr>
-                    <tr style="border-bottom: 1px solid var(--slate-100);">
-                      <td style="padding: 0.75rem 0; color: var(--slate-600);">Current at Pmax (Imp)</td>
-                      <td style="padding: 0.75rem 0; font-weight: 600; text-align: right;">9.14A</td>
-                    </tr>
-                    <tr style="border-bottom: 1px solid var(--slate-100);">
-                      <td style="padding: 0.75rem 0; color: var(--slate-600);">Open Circuit Voltage (Voc)</td>
-                      <td style="padding: 0.75rem 0; font-weight: 600; text-align: right;">45.6V</td>
-                    </tr>
-                    <tr>
-                      <td style="padding: 0.75rem 0; color: var(--slate-600);">Short Circuit Current (Isc)</td>
-                      <td style="padding: 0.75rem 0; font-weight: 600; text-align: right;">9.68A</td>
-                    </tr>
-                  </table>
-                </div>
-
-                <div>
-                  <h4 style="font-weight: bold; color: var(--slate-900); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--slate-200);">Mechanical Data</h4>
-                  <table style="width: 100%; border-collapse: collapse;">
-                    <tr style="border-bottom: 1px solid var(--slate-100);">
-                      <td style="padding: 0.75rem 0; color: var(--slate-600);">Cell Type</td>
-                      <td style="padding: 0.75rem 0; font-weight: 600; text-align: right;">Monocrystalline</td>
-                    </tr>
-                    <tr style="border-bottom: 1px solid var(--slate-100);">
-                      <td style="padding: 0.75rem 0; color: var(--slate-600);">Number of Cells</td>
-                      <td style="padding: 0.75rem 0; font-weight: 600; text-align: right;">72 (6×12)</td>
-                    </tr>
-                    <tr style="border-bottom: 1px solid var(--slate-100);">
-                      <td style="padding: 0.75rem 0; color: var(--slate-600);">Dimensions</td>
-                      <td style="padding: 0.75rem 0; font-weight: 600; text-align: right;">1956×992×40mm</td>
-                    </tr>
-                    <tr style="border-bottom: 1px solid var(--slate-100);">
-                      <td style="padding: 0.75rem 0; color: var(--slate-600);">Weight</td>
-                      <td style="padding: 0.75rem 0; font-weight: 600; text-align: right;">22.5 kg</td>
-                    </tr>
-                    <tr>
-                      <td style="padding: 0.75rem 0; color: var(--slate-600);">Frame Material</td>
-                      <td style="padding: 0.75rem 0; font-weight: 600; text-align: right;">Anodized Aluminum</td>
-                    </tr>
-                  </table>
-                </div>
-              </div>
-            </div>
-
-            <!-- Tab Content: Downloads -->
-            <div id="content-downloads" class="tab-content" style="display: none;">
-              <h3 style="font-size: 1.5rem; font-weight: bold; color: var(--slate-900); margin-bottom: 1.5rem;">Product Downloads</h3>
-              
-              <div style="display: grid; gap: 1rem;">
-                <a href="#" class="card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem; transition: all 0.2s; text-decoration: none;">
-                  <div style="background: rgba(46, 52, 127, 0.1); padding: 1rem; border-radius: 0.5rem;">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--brand-blue);">
-                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                      <polyline points="14 2 14 8 20 8"></polyline>
-                      <line x1="16" y1="13" x2="8" y2="13"></line>
-                      <line x1="16" y1="17" x2="8" y2="17"></line>
-                    </svg>
-                  </div>
-                  <div style="flex: 1;">
-                    <h4 style="font-weight: 600; color: var(--slate-900); margin-bottom: 0.25rem;">Product Datasheet</h4>
-                    <p style="font-size: 0.875rem; color: var(--slate-500);">PDF • 1.2 MB • Full technical specifications</p>
-                  </div>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--slate-400);">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                    <polyline points="7 10 12 15 17 10"></polyline>
-                    <line x1="12" y1="15" x2="12" y2="3"></line>
-                  </svg>
-                </a>
-
-                <a href="#" class="card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem; transition: all 0.2s; text-decoration: none;">
-                  <div style="background: rgba(46, 52, 127, 0.1); padding: 1rem; border-radius: 0.5rem;">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--brand-blue);">
-                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                      <polyline points="14 2 14 8 20 8"></polyline>
-                      <line x1="16" y1="13" x2="8" y2="13"></line>
-                      <line x1="16" y1="17" x2="8" y2="17"></line>
-                    </svg>
-                  </div>
-                  <div style="flex: 1;">
-                    <h4 style="font-weight: 600; color: var(--slate-900); margin-bottom: 0.25rem;">Installation Manual</h4>
-                    <p style="font-size: 0.875rem; color: var(--slate-500);">PDF • 2.5 MB • Step-by-step installation guide</p>
-                  </div>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--slate-400);">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                    <polyline points="7 10 12 15 17 10"></polyline>
-                    <line x1="12" y1="15" x2="12" y2="3"></line>
-                  </svg>
-                </a>
-
-                <a href="#" class="card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem; transition: all 0.2s; text-decoration: none;">
-                  <div style="background: rgba(46, 52, 127, 0.1); padding: 1rem; border-radius: 0.5rem;">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--brand-blue);">
-                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                      <polyline points="14 2 14 8 20 8"></polyline>
-                      <line x1="16" y1="13" x2="8" y2="13"></line>
-                      <line x1="16" y1="17" x2="8" y2="17"></line>
-                    </svg>
-                  </div>
-                  <div style="flex: 1;">
-                    <h4 style="font-weight: 600; color: var(--slate-900); margin-bottom: 0.25rem;">Certifications</h4>
-                    <p style="font-size: 0.875rem; color: var(--slate-500);">PDF • 0.8 MB • IEC, TUV, CE, UL certificates</p>
-                  </div>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--slate-400);">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                    <polyline points="7 10 12 15 17 10"></polyline>
-                    <line x1="12" y1="15" x2="12" y2="3"></line>
-                  </svg>
-                </a>
-              </div>
-            </div>
-
-            <!-- Tab Content: Warranty -->
-            <div id="content-warranty" class="tab-content" style="display: none;">
-              <h3 style="font-size: 1.5rem; font-weight: bold; color: var(--slate-900); margin-bottom: 1.5rem;">Warranty Information</h3>
-              
-              <div style="background: var(--slate-50); padding: 2rem; border-radius: 0.75rem; margin-bottom: 1.5rem;">
-                <h4 style="font-weight: bold; color: var(--slate-900); margin-bottom: 1rem;">25-Year Linear Power Warranty</h4>
-                <ul style="list-style: none; display: grid; gap: 0.75rem;">
-                  <li style="display: flex; align-items: start;">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--green-500); margin-right: 0.75rem; flex-shrink: 0; margin-top: 0.125rem;">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                    <span style="color: var(--slate-700);">97.5% power output after 10 years</span>
-                  </li>
-                  <li style="display: flex; align-items: start;">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--green-500); margin-right: 0.75rem; flex-shrink: 0; margin-top: 0.125rem;">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                    <span style="color: var(--slate-700);">80% power output after 25 years</span>
-                  </li>
-                  <li style="display: flex; align-items: start;">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--green-500); margin-right: 0.75rem; flex-shrink: 0; margin-top: 0.125rem;">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                    <span style="color: var(--slate-700);">Transferable to subsequent owners</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div style="background: var(--slate-50); padding: 2rem; border-radius: 0.75rem;">
-                <h4 style="font-weight: bold; color: var(--slate-900); margin-bottom: 1rem;">10-Year Product Warranty</h4>
-                <ul style="list-style: none; display: grid; gap: 0.75rem;">
-                  <li style="display: flex; align-items: start;">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--green-500); margin-right: 0.75rem; flex-shrink: 0; margin-top: 0.125rem;">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                    <span style="color: var(--slate-700);">Covers defects in materials and workmanship</span>
-                  </li>
-                  <li style="display: flex; align-items: start;">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--green-500); margin-right: 0.75rem; flex-shrink: 0; margin-top: 0.125rem;">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                    <span style="color: var(--slate-700);">Free repair or replacement at our discretion</span>
-                  </li>
-                  <li style="display: flex; align-items: start;">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--green-500); margin-right: 0.75rem; flex-shrink: 0; margin-top: 0.125rem;">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                    <span style="color: var(--slate-700);">24/7 technical support available</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-      <div class="footer-content">
-        <div class="footer-grid">
-          <div class="footer-section">
-            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
-              <a href="index.html" class="logo" aria-label="Univolt Power Home">
-                <img src="im6.jpeg" alt="Univolt Power" class="site-logo" style="box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
-              </a>
-            </div>
-            <p>Leading the way in sustainable energy solutions.</p>
-          </div>
-
-          <div class="footer-section">
-            <h3>Quick Links</h3>
-            <ul>
-              <li><a href="index.html">Home</a></li>
-              <li><a href="about.html">About</a></li>
-              <li><a href="products.html">Products</a></li>
-              <li><a href="solutions.html">Solutions</a></li>
-            </ul>
-          </div>
-
-          <div class="footer-section">
-            <h3>Our Solutions</h3>
-            <ul>
-              <li><a href="solutions.html">Solar EPC Solutions</a></li>
-              <li><a href="solutions.html">Residential Solar</a></li>
-              <li><a href="solutions.html">Commercial & Industrial</a></li>
-            </ul>
-          </div>
-
-          <div class="footer-section">
-            <h3>Contact Us</h3>
-            <p style="font-size: 0.875rem;">univoltpower@gmail.com<br>+1 (555) 123-4567</p>
-          </div>
-        </div>
-        
-        <div class="footer-bottom">
-          <p>&copy; 2026 Univolt Power. All rights reserved.</p>
-        </div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span class="cart-total-label">Total</span>
+        <span id="cart-total" class="cart-total-amount">Ksh 0.00</span>
       </div>
-    </footer>
+      <button id="checkout-btn" class="btn-checkout" onclick="handleCheckout()">Checkout</button>
+    </div>
   </div>
 
-  <script src="script.js"></script>
-  <script>
-    function showTab(tabName) {
-      // Hide all tab contents
-      document.querySelectorAll('.tab-content').forEach(content => {
-        content.style.display = 'none';
-      });
-      
-      // Remove active state from all tab buttons
-      document.querySelectorAll('[id^="tab-"]').forEach(btn => {
-        btn.style.color = 'var(--slate-600)';
-        btn.style.borderBottom = 'none';
-      });
-      
-      // Show selected tab content
-      document.getElementById('content-' + tabName).style.display = 'block';
-      
-      // Highlight selected tab button
-      const activeBtn = document.getElementById('tab-' + tabName);
-      activeBtn.style.color = 'var(--brand-blue)';
-      activeBtn.style.borderBottom = '2px solid var(--brand-blue)';
-      activeBtn.style.marginBottom = '-2px';
-    }
-  </script>
+  <!-- ── TOAST ── -->
+  <div id="toast" class="toast success">
+    <svg class="toast-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+      <polyline points="22 4 12 14.01 9 11.01"/>
+    </svg>
+    <span id="toast-message" class="toast-message"></span>
+  </div>
+
+  <!-- ── MAIN PRODUCT PAGE (rendered by JS) ── -->
+  <main id="product-page" class="main-content"></main>
+
+  <!-- ── FOOTER ── -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-grid">
+        <div class="footer-section">
+          <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:1rem;">
+            <a href="index.html" class="logo" aria-label="Univolt Power Home">
+              <img src="logo.png" alt="Univolt Power" class="site-logo" />
+            </a>
+          </div>
+          <p>Leading the way in sustainable energy solutions. We provide end-to-end solar engineering, procurement, and construction services.</p>
+          <div class="social-links">
+            <a href="#"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+            <a href="#"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></a>
+            <a href="#"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+            <a href="#"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+          </div>
+        </div>
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="products.html">Products</a></li>
+            <li><a href="solutions.html">Services</a></li>
+            <li><a href="projects.html">Projects</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Our Services</h3>
+          <ul>
+            <li><a href="solutions.html">Commercial Solar</a></li>
+            <li><a href="solutions.html">Residential Installation</a></li>
+            <li><a href="solutions.html">Maintenance &amp; Repairs</a></li>
+            <li><a href="solutions.html">Battery Storage</a></li>
+            <li><a href="solutions.html">Consulting</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Contact Us</h3>
+          <ul style="font-size:.875rem;">
+            <li style="display:flex;align-items:start;margin-bottom:.75rem;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--brand-blue);margin-right:.5rem;flex-shrink:0;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <span>123 Solar Blvd, Suite 100<br>Sun City, AZ 85001</span>
+            </li>
+            <li style="display:flex;align-items:center;margin-bottom:.75rem;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--brand-blue);margin-right:.5rem;"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <span>+1 (555) 123-4567</span>
+            </li>
+            <li style="display:flex;align-items:center;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--brand-blue);margin-right:.5rem;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <span>info@univoltpower.com</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Univolt Power. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
