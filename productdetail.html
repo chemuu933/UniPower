@@ -4,7 +4,259 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Product Detail - Univolt Power</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <style>
+    :root {
+      --brand-blue: #1a6fc4;
+      --brand-blue-dark: #0f4d8a;
+      --slate-50: #f8fafc;
+      --slate-100: #f1f5f9;
+      --slate-200: #e2e8f0;
+      --slate-600: #475569;
+      --slate-700: #334155;
+      --slate-800: #1e293b;
+      --accent-orange: #f97316;
+      --accent-green: #22c55e;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #f8fafc;
+      color: #1e293b;
+    }
+
+    /* ── HEADER (copied pattern) ── */
+    .header { background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.08); position: sticky; top: 0; z-index: 100; }
+    .header-content { max-width: 1280px; margin: 0 auto; padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; height: 70px; }
+    .logo img.site-logo { height: 48px; object-fit: contain; }
+    .nav-desktop { display: flex; align-items: center; gap: 1.5rem; }
+    .nav-link { text-decoration: none; color: #334155; font-size: .9rem; font-weight: 500; transition: color .2s; }
+    .nav-link:hover, .nav-link.active { color: var(--brand-blue); }
+    .btn { display: inline-flex; align-items: center; gap: .5rem; padding: .6rem 1.4rem; border-radius: 6px; font-weight: 600; font-size: .875rem; cursor: pointer; text-decoration: none; border: none; transition: all .2s; }
+    .btn-primary { background: var(--brand-blue); color: #fff; }
+    .btn-primary:hover { background: var(--brand-blue-dark); }
+    .header-actions { display: flex; align-items: center; gap: .75rem; }
+    .cart-button { background: none; border: none; cursor: pointer; position: relative; color: #334155; display: flex; align-items: center; }
+    .cart-count { position: absolute; top: -6px; right: -6px; background: var(--brand-blue); color: #fff; border-radius: 50%; width: 18px; height: 18px; font-size: .65rem; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+    .mobile-menu-btn { background: none; border: none; cursor: pointer; color: #334155; display: none; }
+    @media(max-width:768px){ .nav-desktop{display:none;} .mobile-menu-btn{display:flex;} }
+    .nav-mobile { display: none; flex-direction: column; background: #fff; padding: 1rem 1.5rem; border-top: 1px solid #e2e8f0; }
+    .nav-mobile.active { display: flex; }
+
+    /* ── CART DRAWER ── */
+    .cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 200; opacity: 0; pointer-events: none; transition: opacity .3s; }
+    .cart-overlay.active { opacity: 1; pointer-events: all; }
+    .cart-drawer { position: fixed; top: 0; right: 0; width: 380px; max-width: 100vw; height: 100vh; background: #fff; z-index: 201; transform: translateX(100%); transition: transform .3s cubic-bezier(.4,0,.2,1); display: flex; flex-direction: column; }
+    .cart-drawer.active { transform: translateX(0); }
+    .cart-header { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 1.5rem; border-bottom: 1px solid #e2e8f0; }
+    .cart-title { display: flex; align-items: center; gap: .5rem; font-weight: 700; font-size: 1.1rem; }
+    .cart-close { background: none; border: none; cursor: pointer; color: #64748b; }
+    .cart-items { flex: 1; overflow-y: auto; padding: 1rem 1.5rem; }
+    .cart-item { display: flex; gap: 1rem; padding: .75rem 0; border-bottom: 1px solid #f1f5f9; }
+    .cart-item-image { width: 64px; height: 64px; border-radius: 8px; overflow: hidden; flex-shrink: 0; background: #f1f5f9; }
+    .cart-item-image img { width: 100%; height: 100%; object-fit: cover; }
+    .cart-item-details { flex: 1; }
+    .cart-item-name { font-size: .85rem; font-weight: 600; margin-bottom: .25rem; }
+    .cart-item-qty { font-size: .75rem; color: #64748b; }
+    .cart-item-price { font-size: .9rem; font-weight: 700; color: var(--brand-blue); margin-top: .25rem; }
+    .cart-remove { background: none; border: none; cursor: pointer; color: #ef4444; padding: .25rem; flex-shrink: 0; }
+    .cart-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 200px; color: #94a3b8; text-align: center; padding: 2rem; }
+    .cart-footer { padding: 1.25rem 1.5rem; border-top: 1px solid #e2e8f0; }
+    .cart-total { display: flex; justify-content: space-between; margin-bottom: 1rem; font-weight: 700; font-size: 1.1rem; }
+    .btn-checkout { width: 100%; background: var(--brand-blue); color: #fff; border: none; padding: .875rem; border-radius: 8px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: background .2s; }
+    .btn-checkout:hover { background: var(--brand-blue-dark); }
+    .btn-checkout:disabled { opacity: .5; cursor: not-allowed; }
+
+    /* ── TOAST ── */
+    .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px); background: #1e293b; color: #fff; padding: .75rem 1.25rem; border-radius: 8px; display: flex; align-items: center; gap: .5rem; z-index: 300; opacity: 0; transition: all .35s cubic-bezier(.4,0,.2,1); white-space: nowrap; }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast-icon { color: #22c55e; flex-shrink: 0; }
+
+    /* ═══════════════════════════════════════════
+       PRODUCT DETAIL PAGE STYLES
+    ═══════════════════════════════════════════ */
+
+    /* Breadcrumb */
+    .breadcrumb { max-width: 1280px; margin: 0 auto; padding: 1.25rem 1.5rem .5rem; display: flex; align-items: center; gap: .5rem; font-size: .85rem; color: #64748b; flex-wrap: wrap; }
+    .breadcrumb a { color: #64748b; text-decoration: none; transition: color .2s; }
+    .breadcrumb a:hover { color: var(--brand-blue); }
+    .breadcrumb-sep { color: #cbd5e1; }
+    .breadcrumb-current { color: #1e293b; font-weight: 500; }
+
+    /* Product hero section */
+    .product-hero {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 1.5rem 1.5rem 3rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    @media(max-width: 900px) { .product-hero { grid-template-columns: 1fr; gap: 2rem; } }
+
+    /* Gallery */
+    .product-gallery { position: sticky; top: 90px; }
+    .main-image-wrap {
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #e2e8f0;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+    .main-image-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 1.5rem;
+      transition: transform .4s ease;
+    }
+    .main-image-wrap:hover img { transform: scale(1.04); }
+    .category-badge {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      background: var(--brand-blue);
+      color: #fff;
+      font-size: .75rem;
+      font-weight: 700;
+      padding: .3rem .75rem;
+      border-radius: 20px;
+      letter-spacing: .03em;
+    }
+    .thumb-row { display: flex; gap: .75rem; }
+    .thumb {
+      width: 72px; height: 72px;
+      border-radius: 10px;
+      border: 2px solid #e2e8f0;
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color .2s;
+      background: #fff;
+      flex-shrink: 0;
+    }
+    .thumb:hover, .thumb.active { border-color: var(--brand-blue); }
+    .thumb img { width: 100%; height: 100%; object-fit: contain; padding: 4px; }
+
+    /* Info panel */
+    .product-info { display: flex; flex-direction: column; gap: 1.5rem; }
+    .product-meta { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; }
+    .meta-tag { background: #eff6ff; color: var(--brand-blue); font-size: .75rem; font-weight: 600; padding: .3rem .7rem; border-radius: 20px; }
+    .meta-tag.green { background: #f0fdf4; color: #16a34a; }
+    .stock-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; display: inline-block; }
+
+    .product-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.9rem;
+      font-weight: 800;
+      line-height: 1.2;
+      color: #0f172a;
+    }
+    @media(max-width:600px){ .product-title { font-size: 1.5rem; } }
+
+    .product-price-row { display: flex; align-items: baseline; gap: 1rem; }
+    .product-price {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--brand-blue);
+    }
+    .product-price-note { font-size: .85rem; color: #64748b; }
+
+    .rating-row { display: flex; align-items: center; gap: .5rem; }
+    .stars { color: #f59e0b; letter-spacing: 2px; }
+    .rating-count { font-size: .85rem; color: #64748b; }
+
+    .divider { height: 1px; background: #e2e8f0; }
+
+    .product-desc { font-size: .95rem; line-height: 1.75; color: #475569; }
+
+    /* Specs grid */
+    .specs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .5rem;
+    }
+    .spec-item {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: .75rem 1rem;
+    }
+    .spec-label { font-size: .72rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: .06em; margin-bottom: .2rem; }
+    .spec-value { font-size: .9rem; font-weight: 600; color: #1e293b; }
+
+    /* Actions */
+    .action-row { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+    .qty-control { display: flex; align-items: center; gap: 0; border: 1.5px solid #e2e8f0; border-radius: 10px; overflow: hidden; }
+    .qty-btn { background: #f8fafc; border: none; width: 40px; height: 48px; font-size: 1.2rem; cursor: pointer; transition: background .15s; color: #334155; }
+    .qty-btn:hover { background: #e2e8f0; }
+    .qty-input { width: 48px; height: 48px; text-align: center; border: none; border-left: 1.5px solid #e2e8f0; border-right: 1.5px solid #e2e8f0; font-size: 1rem; font-weight: 600; outline: none; }
+    .btn-add { flex: 1; min-width: 160px; background: var(--brand-blue); color: #fff; border: none; padding: .875rem 1.5rem; border-radius: 10px; font-size: 1rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: .5rem; transition: all .2s; }
+    .btn-add:hover { background: var(--brand-blue-dark); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(26,111,196,.3); }
+    .btn-quote { background: #fff; border: 1.5px solid var(--brand-blue); color: var(--brand-blue); padding: .875rem 1.25rem; border-radius: 10px; font-size: .9rem; font-weight: 700; cursor: pointer; transition: all .2s; white-space: nowrap; }
+    .btn-quote:hover { background: #eff6ff; }
+
+    /* Highlights */
+    .highlights { display: flex; flex-direction: column; gap: .6rem; }
+    .highlight-item { display: flex; align-items: center; gap: .75rem; font-size: .875rem; color: #475569; }
+    .highlight-icon { width: 32px; height: 32px; border-radius: 8px; background: #eff6ff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--brand-blue); }
+
+    /* Tabs section */
+    .tabs-section { max-width: 1280px; margin: 0 auto 4rem; padding: 0 1.5rem; }
+    .tab-nav { display: flex; gap: 0; border-bottom: 2px solid #e2e8f0; margin-bottom: 2rem; overflow-x: auto; }
+    .tab-btn {
+      background: none; border: none; padding: .875rem 1.5rem; font-size: .9rem; font-weight: 600; color: #64748b; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all .2s; white-space: nowrap;
+    }
+    .tab-btn.active { color: var(--brand-blue); border-bottom-color: var(--brand-blue); }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* Spec table */
+    .spec-table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+    .spec-table th { text-align: left; padding: .75rem 1rem; background: #f8fafc; font-weight: 700; color: #334155; border: 1px solid #e2e8f0; width: 35%; }
+    .spec-table td { padding: .75rem 1rem; border: 1px solid #e2e8f0; color: #475569; }
+    .spec-table tr:nth-child(even) td { background: #f8fafc; }
+
+    /* Features list */
+    .features-list { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media(max-width:600px){ .features-list { grid-template-columns: 1fr; } }
+    .feature-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.25rem; display: flex; gap: 1rem; }
+    .feature-icon { width: 40px; height: 40px; border-radius: 10px; background: #eff6ff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.25rem; }
+    .feature-title { font-weight: 700; font-size: .9rem; margin-bottom: .25rem; color: #1e293b; }
+    .feature-desc { font-size: .8rem; color: #64748b; line-height: 1.5; }
+
+    /* Related products */
+    .related-section { background: #fff; padding: 3rem 0; border-top: 1px solid #e2e8f0; }
+    .related-inner { max-width: 1280px; margin: 0 auto; padding: 0 1.5rem; }
+    .section-title { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 800; margin-bottom: 1.5rem; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.25rem; }
+    .related-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; cursor: pointer; transition: all .2s; }
+    .related-card:hover { border-color: var(--brand-blue); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.08); }
+    .related-img { height: 160px; overflow: hidden; background: #fff; display: flex; align-items: center; justify-content: center; }
+    .related-img img { width: 100%; height: 100%; object-fit: contain; padding: .75rem; }
+    .related-info { padding: .875rem 1rem; }
+    .related-name { font-size: .85rem; font-weight: 600; margin-bottom: .4rem; color: #1e293b; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .related-price { font-size: .95rem; font-weight: 800; color: var(--brand-blue); }
+
+    /* Not found */
+    .not-found { text-align: center; padding: 6rem 2rem; color: #64748b; }
+    .not-found h2 { font-family: 'Syne', sans-serif; font-size: 1.5rem; color: #334155; margin-bottom: .5rem; }
+
+    /* Footer */
+    .footer { background: #0f172a; color: #94a3b8; padding: 3rem 0 1.5rem; }
+    .footer-content { max-width: 1280px; margin: 0 auto; padding: 0 1.5rem; }
+    .footer-bottom { border-top: 1px solid #1e293b; margin-top: 2rem; padding-top: 1.5rem; text-align: center; font-size: .8rem; }
+  </style>
 </head>
 <body>
 <div class="page-wrapper">
@@ -18,12 +270,12 @@
       <nav class="nav-desktop">
         <a href="index.html" class="nav-link">Home</a>
         <a href="about.html" class="nav-link">About</a>
-        <a href="products.html" class="nav-link">Products</a>
+        <a href="products.html" class="nav-link active">Products</a>
         <a href="solutions.html" class="nav-link">Solutions</a>
         <a href="projects.html" class="nav-link">Projects</a>
         <a href="resources.html" class="nav-link">Resources</a>
         <a href="contact.html" class="nav-link">Contact</a>
-        <a href="getaquote.html" class="btn btn-primary pd-get-quote-nav">Get Quote</a>
+        <a href="getaquote.html" class="btn btn-primary" style="padding:.5rem 1.5rem;font-size:.875rem;margin-left:1rem;">Get Quote</a>
       </nav>
       <div class="header-actions">
         <button class="cart-button" onclick="cart.openCart()">
@@ -35,9 +287,7 @@
         </button>
         <button id="mobile-menu-btn" class="mobile-menu-btn" onclick="toggleMobileMenu()">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="3" y1="12" x2="21" y2="12"/>
-            <line x1="3" y1="6" x2="21" y2="6"/>
-            <line x1="3" y1="18" x2="21" y2="18"/>
+            <line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/>
           </svg>
         </button>
       </div>
@@ -62,29 +312,27 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
           <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-        </svg>
-        Your Cart
+        </svg>Your Cart
       </h2>
       <button class="cart-close" onclick="cart.closeCart()">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <line x1="18" y1="6" x2="6" y2="18"/>
-          <line x1="6" y1="6" x2="18" y2="18"/>
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
         </svg>
       </button>
     </div>
     <div class="cart-items" id="cart-items"></div>
     <div id="cart-empty" class="cart-empty">
-      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:.2;margin:0 auto 1rem;display:block;">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:.2;margin:0 auto 1rem">
         <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
         <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
       </svg>
       <p>Your cart is empty.</p>
-      <button class="pd-start-shopping" onclick="cart.closeCart()">Start Shopping</button>
+      <button style="margin-top:1rem;color:var(--brand-blue);font-weight:500;" onclick="cart.closeCart()">Start Shopping</button>
     </div>
     <div class="cart-footer">
       <div class="cart-total">
-        <span class="cart-total-label">Total</span>
-        <span id="cart-total" class="cart-total-amount">Ksh 0.00</span>
+        <span>Total</span>
+        <span id="cart-total">Ksh 0.00</span>
       </div>
       <button id="checkout-btn" class="btn-checkout" onclick="handleCheckout()">Checkout</button>
     </div>
@@ -93,71 +341,17 @@
   <!-- ── TOAST ── -->
   <div id="toast" class="toast success">
     <svg class="toast-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-      <polyline points="22 4 12 14.01 9 11.01"/>
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
     </svg>
     <span id="toast-message" class="toast-message"></span>
   </div>
 
-  <!-- ── MAIN PRODUCT PAGE (rendered by JS) ── -->
-  <main id="product-page" class="main-content"></main>
+  <!-- ── MAIN ── -->
+  <main id="product-page"></main>
 
   <!-- ── FOOTER ── -->
   <footer class="footer">
     <div class="footer-content">
-      <div class="footer-grid">
-        <div class="footer-section">
-          <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:1rem;">
-            <a href="index.html" class="logo" aria-label="Univolt Power Home">
-              <img src="im6.jpeg" alt="Univolt Power" class="site-logo" style="border-radius: 0.25rem; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
-            </a>
-          </div>
-          <p>Leading the way in sustainable energy solutions. We provide end-to-end solar engineering, procurement, and construction services.</p>
-          <div class="social-links">
-            <a href="#"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
-            <a href="#"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></a>
-            <a href="#"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
-            <a href="#"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
-          </div>
-        </div>
-        <div class="footer-section">
-          <h3>Quick Links</h3>
-          <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="products.html">Products</a></li>
-            <li><a href="solutions.html">Services</a></li>
-            <li><a href="projects.html">Projects</a></li>
-          </ul>
-        </div>
-        <div class="footer-section">
-          <h3>Our Services</h3>
-          <ul>
-            <li><a href="solutions.html">Commercial Solar</a></li>
-            <li><a href="solutions.html">Residential Installation</a></li>
-            <li><a href="solutions.html">Maintenance &amp; Repairs</a></li>
-            <li><a href="solutions.html">Battery Storage</a></li>
-            <li><a href="solutions.html">Consulting</a></li>
-          </ul>
-        </div>
-        <div class="footer-section">
-          <h3>Contact Us</h3>
-          <ul style="font-size:.875rem;">
-            <li style="display:flex;align-items:start;margin-bottom:.75rem;">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--brand-blue);margin-right:.5rem;flex-shrink:0;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              <span>Nairobi<br>Kenya</span>
-            </li>
-            <li style="display:flex;align-items:center;margin-bottom:.75rem;">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--brand-blue);margin-right:.5rem;"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-              <span>0708345963</span>
-            </li>
-            <li style="display:flex;align-items:center;">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--brand-blue);margin-right:.5rem;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-              <span>univoltpower@gmail.com</span>
-            </li>
-          </ul>
-        </div>
-      </div>
       <div class="footer-bottom">
         <p>&copy; 2026 Univolt Power. All rights reserved.</p>
       </div>
@@ -166,5 +360,1240 @@
 </div>
 
 <script src="script.js"></script>
+<script>
+/* ═══════════════════════════════════════════════
+   PRODUCT DATABASE
+═══════════════════════════════════════════════ */
+const PRODUCTS = {
+  1: {
+    id: 1,
+    name: "600W Jinko Monocrystalline Panel",
+    category: "Solar Panels",
+    price: "Ksh 249,900.00",
+    priceRaw: 249900,
+    image: "image/image1.png",
+    images: ["image/image1.png"],
+    rating: 4.8,
+    reviews: 142,
+    inStock: true,
+    description: "The Jinko 600W Monocrystalline Solar Panel represents the pinnacle of solar technology, delivering exceptional efficiency in a large-format module. Engineered with advanced PERC cell technology and half-cut cell architecture, this panel maximizes energy yield even in low-light and high-temperature conditions — ideal for the Kenyan climate.",
+    specs: [
+      ["Peak Power (Pmax)", "600W"],
+      ["Module Efficiency", "21.3%"],
+      ["Open Circuit Voltage (Voc)", "49.2V"],
+      ["Short Circuit Current (Isc)", "15.48A"],
+      ["Maximum Power Voltage (Vmp)", "41.6V"],
+      ["Maximum Power Current (Imp)", "14.42A"],
+      ["Temperature Coefficient (Pmax)", "-0.35%/°C"],
+      ["Operating Temperature", "-40°C to +85°C"],
+      ["Cell Type", "Monocrystalline PERC"],
+      ["Cell Configuration", "144 cells (6×24)"],
+      ["Frame", "Anodized Aluminium"],
+      ["Connector Type", "MC4 Compatible"],
+      ["Dimensions", "2278 × 1134 × 35 mm"],
+      ["Weight", "32.5 kg"],
+      ["Warranty", "25 Years Linear Power Output"],
+    ],
+    features: [
+      { icon: "⚡", title: "High Efficiency PERC", desc: "Advanced passivated emitter rear contact technology maximises output." },
+      { icon: "🌦️", title: "All-Weather Performance", desc: "Certified for wind loads up to 2400 Pa and snow loads up to 5400 Pa." },
+      { icon: "🔋", title: "Half-Cut Cell Design", desc: "Reduces resistive losses and improves shade tolerance significantly." },
+      { icon: "📜", title: "25-Year Warranty", desc: "Industry-leading linear power output guarantee for peace of mind." },
+    ],
+    relatedIds: [5, 8, 9, 12],
+  },
+  2: {
+    id: 2,
+    name: "Dyness 5kWh Lithium Battery",
+    category: "Batteries",
+    price: "Ksh 140,000.00",
+    priceRaw: 140000,
+    image: "image/Image3.png",
+    images: ["image/Image3.png"],
+    rating: 4.7,
+    reviews: 89,
+    inStock: true,
+    description: "The Dyness 5kWh Lithium Iron Phosphate (LiFePO4) Battery is a wall-mounted modular energy storage solution designed for residential and light-commercial solar installations. With exceptional cycle life and built-in Battery Management System (BMS), it offers safe, reliable backup power you can count on.",
+    specs: [
+      ["Usable Capacity", "5.12 kWh"],
+      ["Cell Chemistry", "LiFePO4"],
+      ["Nominal Voltage", "48V"],
+      ["Max Charge Current", "100A"],
+      ["Max Discharge Current", "100A"],
+      ["Cycle Life", ">6000 cycles @ 80% DoD"],
+      ["Depth of Discharge", "80%"],
+      ["Communication", "CAN / RS485"],
+      ["Protection Class", "IP55"],
+      ["Operating Temperature", "0°C – 55°C"],
+      ["Dimensions", "440 × 410 × 155 mm"],
+      ["Weight", "46 kg"],
+      ["Warranty", "10 Years"],
+    ],
+    features: [
+      { icon: "🔥", title: "LiFePO4 Chemistry", desc: "Safest lithium chemistry — no thermal runaway risk, non-toxic." },
+      { icon: "🔄", title: "6000+ Cycles", desc: "Outlasts other battery types, delivering over 16 years of daily use." },
+      { icon: "📡", title: "Smart BMS", desc: "Built-in BMS monitors voltage, temperature and current in real time." },
+      { icon: "🏗️", title: "Modular & Stackable", desc: "Expand your storage by stacking up to 8 units in parallel." },
+    ],
+    relatedIds: [27, 28, 29, 30],
+  },
+  3: {
+    id: 3,
+    name: "Solis 8kW Hybrid Inverter",
+    category: "Inverters",
+    price: "Ksh 129,900.00",
+    priceRaw: 129900,
+    image: "image/Image4.png",
+    images: ["image/Image4.png"],
+    rating: 4.9,
+    reviews: 203,
+    inStock: true,
+    description: "The Solis 8kW Hybrid Inverter is a dual-MPPT, single-phase inverter that seamlessly integrates solar generation, battery storage and grid power into one intelligent system. Its advanced energy management algorithm ensures maximum self-consumption, reducing your electricity bill to near zero.",
+    specs: [
+      ["Rated Output Power", "8000W"],
+      ["Max PV Input Power", "12000W"],
+      ["MPPT Trackers", "2"],
+      ["Max PV Input Voltage", "600V DC"],
+      ["Battery Voltage Range", "40V – 60V (LV)"],
+      ["Max Battery Charge Current", "100A"],
+      ["Max Battery Discharge Current", "100A"],
+      ["AC Output Voltage", "230V ±2%"],
+      ["Grid Frequency", "50Hz"],
+      ["Max Efficiency", "98.4%"],
+      ["Standby Consumption", "<10W"],
+      ["Protection Class", "IP65"],
+      ["Operating Temperature", "-25°C to +60°C"],
+      ["Display", "LCD"],
+      ["Warranty", "5 Years (Extendable to 10)"],
+    ],
+    features: [
+      { icon: "🌐", title: "On/Off-Grid Capable", desc: "Seamlessly switches between grid, solar and battery power." },
+      { icon: "📱", title: "App Monitoring", desc: "Monitor and control your system from the SolisCloud app." },
+      { icon: "🔌", title: "EPS Function", desc: "Emergency Power Supply activates within 20ms during outages." },
+      { icon: "🔧", title: "Dual MPPT", desc: "Two independent trackers maximise output from shaded or mixed arrays." },
+    ],
+    relatedIds: [14, 15, 17, 18],
+  },
+  14: {
+    id: 14,
+    name: "Must 3.2kVA Hybrid Solar Inverter 24V",
+    category: "Inverters",
+    price: "Ksh 43,500.00",
+    priceRaw: 43500,
+    image: "inverters/in1.png",
+    images: ["inverters/in1.png"],
+    rating: 4.5,
+    reviews: 67,
+    inStock: true,
+    description: "The Must 3.2kVA High Frequency Off-Grid Hybrid Inverter is a compact, cost-effective solution for small homes and businesses seeking energy independence. Its built-in PWM solar charge controller and pure sine wave output ensure compatibility with all sensitive appliances.",
+    specs: [
+      ["Rated Power", "3200VA / 2400W"],
+      ["Input Voltage", "24V DC"],
+      ["AC Input Voltage Range", "170 – 280V AC"],
+      ["AC Output Voltage", "220V ±5%"],
+      ["Output Frequency", "50Hz"],
+      ["Solar Charge Controller", "60A PWM"],
+      ["Max PV Open Circuit Voltage", "55V DC"],
+      ["Battery Charging Current", "10 – 60A"],
+      ["Transfer Time", "<10ms"],
+      ["Waveform", "Pure Sine Wave"],
+      ["Efficiency (Peak)", "93%"],
+      ["Protection", "Overload, Short Circuit, Over-Temperature"],
+      ["Display", "LCD"],
+      ["Weight", "7 kg"],
+      ["Warranty", "2 Years"],
+    ],
+    features: [
+      { icon: "💡", title: "Pure Sine Wave", desc: "Clean output compatible with all appliances including medical devices." },
+      { icon: "⚡", title: "PWM Charge Controller", desc: "Integrated 60A PWM controller for direct panel connection." },
+      { icon: "🔋", title: "Multiple Battery Types", desc: "Supports sealed, gel, flooded and lithium battery configurations." },
+      { icon: "🏠", title: "Ideal for Homes", desc: "Perfect for small residential systems and rural electrification." },
+    ],
+    relatedIds: [15, 16, 17, 3],
+  },
+  15: {
+    id: 15,
+    name: "SRNE 5kW 48V Hybrid Pure Sine Wave Inverter",
+    category: "Inverters",
+    price: "Ksh 70,000.00",
+    priceRaw: 70000,
+    image: "inverters/in2.png",
+    images: ["inverters/in2.png"],
+    rating: 4.6,
+    reviews: 54,
+    inStock: true,
+    description: "The SRNE HF Series 5kW 48V Hybrid Inverter combines a high-performance MPPT solar charge controller with a powerful inverter/charger in a single unit. Designed for demanding off-grid and backup power applications, it delivers reliable pure sine wave output for your entire home.",
+    specs: [
+      ["Rated Power", "5000VA / 5000W"],
+      ["Battery Voltage", "48V"],
+      ["MPPT Voltage Range", "60 – 145V DC"],
+      ["Max PV Open Circuit Voltage", "145V DC"],
+      ["Max Solar Charge Current", "80A"],
+      ["AC Input Voltage", "170 – 280V AC"],
+      ["AC Output", "230V / 50Hz"],
+      ["Max Charge Current (AC)", "60A"],
+      ["Transfer Time", "<20ms"],
+      ["Peak Efficiency", "97%"],
+      ["Waveform", "Pure Sine Wave"],
+      ["Protection Class", "IP20"],
+      ["Operating Temperature", "-10°C to +55°C"],
+      ["Dimensions", "480 × 295 × 175 mm"],
+      ["Warranty", "2 Years"],
+    ],
+    features: [
+      { icon: "☀️", title: "MPPT Controller", desc: "Built-in 80A MPPT tracks maximum power point with 99.5% efficiency." },
+      { icon: "🔄", title: "Hybrid Operation", desc: "Solar, battery and grid work together intelligently to cut costs." },
+      { icon: "🛡️", title: "Multi-Protection", desc: "Over-voltage, over-current, short circuit and over-temperature." },
+      { icon: "📊", title: "LCD Display", desc: "Real-time data on power, battery status and solar generation." },
+    ],
+    relatedIds: [14, 16, 17, 3],
+  },
+  16: {
+    id: 16,
+    name: "SRNE 8kW 48V Hybrid Pure Sine Wave Inverter",
+    category: "Inverters",
+    price: "Ksh 205,000.00",
+    priceRaw: 205000,
+    image: "inverters/in3.png",
+    images: ["inverters/in3.png"],
+    rating: 4.7,
+    reviews: 38,
+    inStock: true,
+    description: "Step up to the SRNE 8kW HF Series for larger homes and commercial premises. With extended MPPT voltage range up to 145V and high charge/discharge currents, this inverter handles substantial solar arrays and large battery banks with ease.",
+    specs: [
+      ["Rated Power", "8000VA / 8000W"],
+      ["Battery Voltage", "48V"],
+      ["MPPT Voltage Range", "60 – 145V DC"],
+      ["Max Solar Charge Current", "120A"],
+      ["AC Input Voltage", "170 – 280V AC"],
+      ["AC Output", "230V / 50Hz"],
+      ["Max Charge Current (AC)", "80A"],
+      ["Peak Efficiency", "97.5%"],
+      ["Transfer Time", "<20ms"],
+      ["Waveform", "Pure Sine Wave"],
+      ["Protection Class", "IP20"],
+      ["Dimensions", "540 × 345 × 195 mm"],
+      ["Weight", "19.5 kg"],
+      ["Operating Temperature", "-10°C to +55°C"],
+      ["Warranty", "2 Years"],
+    ],
+    features: [
+      { icon: "💪", title: "8kW Output", desc: "Handles heavy loads including air conditioners and water pumps." },
+      { icon: "☀️", title: "120A MPPT", desc: "Supports large PV arrays up to 10kWp peak power input." },
+      { icon: "🔌", title: "Generator Input", desc: "Compatible with generator charging for backup in cloudy seasons." },
+      { icon: "🌐", title: "RS485 Comms", desc: "Remote monitoring via SRNE monitoring platform." },
+    ],
+    relatedIds: [15, 14, 3, 18],
+  },
+  17: {
+    id: 17,
+    name: "Solis 5kW S6-EO 1-Phase Off-Grid Inverter",
+    category: "Inverters",
+    price: "Ksh 70,000.00",
+    priceRaw: 70000,
+    image: "inverters/in4.png",
+    images: ["inverters/in4.png"],
+    rating: 4.6,
+    reviews: 47,
+    inStock: true,
+    description: "The Solis S6-EO 5kW Off-Grid Inverter is purpose-built for areas without reliable grid access. Its advanced MPPT algorithm and wide voltage input window ensure maximum solar harvest throughout the day, while the robust enclosure protects against dust and moisture.",
+    specs: [
+      ["Rated Power", "5000W"],
+      ["Max PV Input Power", "6000W"],
+      ["MPPT Voltage Range", "90 – 450V DC"],
+      ["Max PV Open Circuit Voltage", "500V DC"],
+      ["Battery Voltage", "48V"],
+      ["Max Battery Charge Current", "80A"],
+      ["AC Output Voltage", "230V AC"],
+      ["Output Frequency", "50Hz"],
+      ["Max Efficiency", "97.6%"],
+      ["Protection Class", "IP65"],
+      ["Operating Temperature", "-25°C to +60°C"],
+      ["Display", "LCD + LED"],
+      ["Dimensions", "365 × 475 × 185 mm"],
+      ["Weight", "14.5 kg"],
+      ["Warranty", "5 Years"],
+    ],
+    features: [
+      { icon: "🏝️", title: "True Off-Grid", desc: "Operates completely independently of the utility grid." },
+      { icon: "🌧️", title: "IP65 Rated", desc: "Fully sealed against dust and water jets — ideal for outdoor installation." },
+      { icon: "📡", title: "SolisCloud Ready", desc: "Wi-Fi monitoring dongle compatible for remote system oversight." },
+      { icon: "⚙️", title: "Wide MPPT Range", desc: "90-450V MPPT window accommodates flexible array configurations." },
+    ],
+    relatedIds: [18, 19, 15, 3],
+  },
+  18: {
+    id: 18,
+    name: "Solis 5kW S6-EH 1-Phase LV Hybrid Inverter",
+    category: "Inverters",
+    price: "Ksh 140,000.00",
+    priceRaw: 140000,
+    image: "inverters/in5.png",
+    images: ["inverters/in5.png"],
+    rating: 4.8,
+    reviews: 91,
+    inStock: true,
+    description: "The Solis S6-EH 5kW Low Voltage Hybrid Inverter is the ideal choice for grid-tied systems with battery backup. It supports low-voltage lithium batteries (48V) from leading brands and offers intelligent time-of-use programming to maximise your savings.",
+    specs: [
+      ["Rated Output Power", "5000W"],
+      ["Max PV Input Power", "7500W"],
+      ["MPPT Trackers", "2"],
+      ["Battery Voltage", "40 – 60V (LV)"],
+      ["Max Battery Charge Current", "100A"],
+      ["AC Output Voltage", "230V ±2%"],
+      ["Max Efficiency", "97.7%"],
+      ["EPS Transfer Time", "<20ms"],
+      ["Protection Class", "IP65"],
+      ["Communication", "Wi-Fi / RS485 / CAN"],
+      ["Operating Temperature", "-25°C to +60°C"],
+      ["Weight", "15 kg"],
+      ["Warranty", "5 Years"],
+    ],
+    features: [
+      { icon: "🔋", title: "LV Battery Support", desc: "Compatible with Dyness, Deye, Pylontech and other LV battery brands." },
+      { icon: "⏱️", title: "Time-of-Use Mode", desc: "Charge from grid during off-peak tariff and discharge at peak times." },
+      { icon: "🌐", title: "Dual MPPT", desc: "Two trackers for east-west or split rooftop array configurations." },
+      { icon: "📱", title: "App Control", desc: "Full control via SolisCloud mobile app for iOS and Android." },
+    ],
+    relatedIds: [19, 20, 3, 17],
+  },
+  19: {
+    id: 19,
+    name: "Solis 8kW S6-EH 1-Phase LV Hybrid Inverter",
+    category: "Inverters",
+    price: "Ksh 200,000.00",
+    priceRaw: 200000,
+    image: "inverters/in6.png",
+    images: ["inverters/in6.png"],
+    rating: 4.8,
+    reviews: 76,
+    inStock: true,
+    description: "The Solis S6-EH 8kW steps up the power for medium-to-large homes and small businesses. With dual MPPT and 100A battery charge current, it supports larger solar arrays and expanded battery banks, making it the workhorse of residential solar storage.",
+    specs: [
+      ["Rated Output Power", "8000W"],
+      ["Max PV Input Power", "12000W"],
+      ["MPPT Trackers", "2"],
+      ["Battery Voltage", "40 – 60V (LV)"],
+      ["Max Battery Charge/Discharge", "100A / 100A"],
+      ["AC Output Voltage", "230V ±2%"],
+      ["Max Efficiency", "98.0%"],
+      ["EPS Transfer Time", "<20ms"],
+      ["Protection Class", "IP65"],
+      ["Communication", "Wi-Fi / RS485 / CAN"],
+      ["Weight", "17.5 kg"],
+      ["Warranty", "5 Years"],
+    ],
+    features: [
+      { icon: "🏢", title: "Commercial Ready", desc: "8kW output handles larger commercial and residential loads." },
+      { icon: "⚡", title: "Rapid EPS", desc: "Emergency power within 20ms — faster than a blink of an eye." },
+      { icon: "🔧", title: "Generator Input", desc: "AC coupling allows generator integration for extended backup." },
+      { icon: "🌍", title: "Export Control", desc: "Zero-export mode prevents excess power feeding back to grid." },
+    ],
+    relatedIds: [18, 20, 21, 3],
+  },
+  20: {
+    id: 20,
+    name: "Solis 16kW S6-EH 1-Phase LV Hybrid Inverter",
+    category: "Inverters",
+    price: "Ksh 400,000.00",
+    priceRaw: 400000,
+    image: "inverters/in7.png",
+    images: ["inverters/in7.png"],
+    rating: 4.9,
+    reviews: 29,
+    inStock: true,
+    description: "The Solis 16kW S6-EH is the flagship single-phase hybrid inverter in the range, delivering enormous power capacity for large homes, villas and commercial applications. Its 12kWp PV input and 200A battery capability support the most demanding energy storage configurations.",
+    specs: [
+      ["Rated Output Power", "16000W"],
+      ["Max PV Input Power", "20000W"],
+      ["MPPT Trackers", "2"],
+      ["Battery Voltage", "40 – 60V (LV)"],
+      ["Max Battery Charge/Discharge", "200A / 200A"],
+      ["AC Output Voltage", "230V ±2%"],
+      ["Max Efficiency", "98.3%"],
+      ["Protection Class", "IP65"],
+      ["Communication", "Wi-Fi / Ethernet / RS485 / CAN"],
+      ["Weight", "25 kg"],
+      ["Warranty", "5 Years"],
+    ],
+    features: [
+      { icon: "💥", title: "16kW Peak Power", desc: "Industry-leading single-phase output for large energy consumers." },
+      { icon: "🔋", title: "200A Battery Current", desc: "Supports large battery banks for extended overnight autonomy." },
+      { icon: "🌐", title: "Ethernet Comms", desc: "Wired network connectivity for reliable industrial monitoring." },
+      { icon: "📈", title: "Energy Analytics", desc: "Detailed consumption and generation analytics via SolisCloud." },
+    ],
+    relatedIds: [19, 18, 21, 24],
+  },
+  21: {
+    id: 21,
+    name: "Solis 15kW S6-EH 3-Phase LV Hybrid Inverter",
+    category: "Inverters",
+    price: "Ksh 360,000.00",
+    priceRaw: 360000,
+    image: "inverters/in10.png",
+    images: ["inverters/in10.png"],
+    rating: 4.8,
+    reviews: 22,
+    inStock: true,
+    description: "The Solis 15kW Three-Phase Hybrid Inverter is designed for commercial and industrial applications with three-phase power requirements. It delivers balanced power across all three phases while supporting substantial solar PV and battery storage capacity.",
+    specs: [
+      ["Rated Output Power", "15000W"],
+      ["Phases", "3-Phase"],
+      ["Max PV Input", "22500W"],
+      ["MPPT Trackers", "3"],
+      ["Battery Voltage", "40 – 60V (LV)"],
+      ["Max Battery Charge/Discharge", "150A / 150A"],
+      ["AC Output Voltage", "400V (3-Phase)"],
+      ["Max Efficiency", "98.1%"],
+      ["Protection Class", "IP65"],
+      ["Warranty", "5 Years"],
+    ],
+    features: [
+      { icon: "🏭", title: "3-Phase Output", desc: "Balanced three-phase power for industrial equipment and lifts." },
+      { icon: "☀️", title: "Triple MPPT", desc: "Three independent MPPT trackers for complex rooftop layouts." },
+      { icon: "🔌", title: "Parallel Operation", desc: "Multiple units can be paralleled for even greater capacity." },
+      { icon: "🛡️", title: "Anti-Islanding", desc: "Certified anti-islanding protection for grid-tied operation." },
+    ],
+    relatedIds: [26, 20, 19, 3],
+  },
+  22: {
+    id: 22,
+    name: "Deye 3.6kW 48V Single-Phase Hybrid On-Grid Inverter",
+    category: "Inverters",
+    price: "Ksh 106,000.00",
+    priceRaw: 106000,
+    image: "inverters/in9.png",
+    images: ["inverters/in9.png"],
+    rating: 4.6,
+    reviews: 58,
+    inStock: true,
+    description: "The Deye 3.6kW Hybrid On-Grid Inverter is an entry-level grid-tied hybrid that packs dual MPPT, 48V battery support and app monitoring into an affordable package. Perfect for households making their first step into solar-plus-storage.",
+    specs: [
+      ["Rated Power", "3600W"],
+      ["Battery Voltage", "48V"],
+      ["MPPT Trackers", "2"],
+      ["Max PV Voltage", "550V DC"],
+      ["Max Charge Current", "80A"],
+      ["AC Output", "230V / 50Hz"],
+      ["Max Efficiency", "97.5%"],
+      ["EPS Transfer", "<30ms"],
+      ["Communication", "Wi-Fi (built-in)"],
+      ["Protection Class", "IP65"],
+      ["Weight", "13 kg"],
+      ["Warranty", "5 Years"],
+    ],
+    features: [
+      { icon: "📶", title: "Built-in Wi-Fi", desc: "No additional dongle needed — connect to SolarmanPro immediately." },
+      { icon: "💰", title: "Entry-Level Price", desc: "Best value hybrid inverter without compromising on quality." },
+      { icon: "🔋", title: "Dual MPPT", desc: "Two trackers provide flexibility for different roof orientations." },
+      { icon: "🌙", title: "Self-Consumption", desc: "Intelligent algorithms maximise solar self-consumption overnight." },
+    ],
+    relatedIds: [23, 24, 25, 18],
+  },
+  23: {
+    id: 23,
+    name: "Deye 8kW 1-Phase LV Hybrid Inverter",
+    category: "Inverters",
+    price: "Ksh 208,000.00",
+    priceRaw: 208000,
+    image: "inverters/in10.png",
+    images: ["inverters/in10.png"],
+    rating: 4.7,
+    reviews: 44,
+    inStock: true,
+    description: "The Deye 8kW 1-Phase Low Voltage Hybrid Inverter delivers outstanding performance for medium-sized homes and businesses. With an industry-leading 160A battery charge current and dual MPPT, it maximises both solar capture and battery charging speed.",
+    specs: [
+      ["Rated Power", "8000W"],
+      ["Battery Voltage", "40 – 60V (LV)"],
+      ["MPPT Trackers", "2"],
+      ["Max PV Voltage", "600V DC"],
+      ["Max Battery Charge Current", "160A"],
+      ["Max Battery Discharge Current", "160A"],
+      ["AC Output", "230V / 50Hz"],
+      ["Max Efficiency", "98.0%"],
+      ["EPS Transfer", "<20ms"],
+      ["Communication", "Wi-Fi / RS485 / CAN"],
+      ["Protection Class", "IP65"],
+      ["Weight", "16 kg"],
+      ["Warranty", "5 Years"],
+    ],
+    features: [
+      { icon: "🚀", title: "160A Charge Current", desc: "Industry-leading fast battery charging fills your bank quickly." },
+      { icon: "⚡", title: "8kW Output", desc: "Powers heavy loads including air conditioning and water heating." },
+      { icon: "🔗", title: "Generator Sync", desc: "Seamlessly synchronises with generator for uninterrupted supply." },
+      { icon: "🌍", title: "Zero-Export Mode", desc: "Keeps surplus power in your home with configurable export limits." },
+    ],
+    relatedIds: [22, 24, 25, 19],
+  },
+  24: {
+    id: 24,
+    name: "Deye 16kW 1-Phase LV Hybrid Inverter",
+    category: "Inverters",
+    price: "Ksh 388,000.00",
+    priceRaw: 388000,
+    image: "inverters/in11.png",
+    images: ["inverters/in11.png"],
+    rating: 4.8,
+    reviews: 17,
+    inStock: true,
+    description: "The Deye 16kW is the powerhouse of the single-phase Deye hybrid range, offering up to 200A battery charge/discharge current and support for solar arrays up to 20kWp. Ideal for large villas, schools, and commercial premises with high daytime consumption.",
+    specs: [
+      ["Rated Power", "16000W"],
+      ["Battery Voltage", "40 – 60V (LV)"],
+      ["MPPT Trackers", "2"],
+      ["Max PV Voltage", "600V DC"],
+      ["Max Battery Charge/Discharge", "200A / 200A"],
+      ["AC Output", "230V / 50Hz"],
+      ["Max Efficiency", "98.4%"],
+      ["EPS Transfer", "<20ms"],
+      ["Communication", "Wi-Fi / RS485 / CAN / Ethernet"],
+      ["Protection Class", "IP65"],
+      ["Weight", "24 kg"],
+      ["Warranty", "5 Years"],
+    ],
+    features: [
+      { icon: "🏆", title: "Flagship Performance", desc: "Top of the Deye single-phase range for maximum power needs." },
+      { icon: "🔋", title: "200A Battery Ports", desc: "Charge and discharge at 200A for rapid energy management." },
+      { icon: "🌐", title: "Ethernet + Wi-Fi", desc: "Dual connectivity ensures reliable cloud monitoring at all times." },
+      { icon: "📊", title: "Advanced Analytics", desc: "Detailed energy flow data accessible through SolarmanPro portal." },
+    ],
+    relatedIds: [23, 25, 20, 26],
+  },
+  25: {
+    id: 25,
+    name: "Deye 5kW 1-Phase LV Hybrid Inverter",
+    category: "Inverters",
+    price: "Ksh 140,000.00",
+    priceRaw: 140000,
+    image: "inverters/in13.png",
+    images: ["inverters/in13.png"],
+    rating: 4.7,
+    reviews: 63,
+    inStock: true,
+    description: "The Deye 5kW LV Hybrid Inverter strikes the perfect balance of power and affordability for average Kenyan households. It supports the most popular lithium battery brands and includes built-in Wi-Fi for instant cloud monitoring — no extras required.",
+    specs: [
+      ["Rated Power", "5000W"],
+      ["Battery Voltage", "40 – 60V (LV)"],
+      ["MPPT Trackers", "2"],
+      ["Max PV Voltage", "500V DC"],
+      ["Max Battery Charge Current", "100A"],
+      ["AC Output", "230V / 50Hz"],
+      ["Max Efficiency", "97.6%"],
+      ["EPS Transfer", "<20ms"],
+      ["Communication", "Wi-Fi (built-in)"],
+      ["Protection Class", "IP65"],
+      ["Weight", "13.5 kg"],
+      ["Warranty", "5 Years"],
+    ],
+    features: [
+      { icon: "🏡", title: "Ideal for Homes", desc: "Right-sized for 3–5 bedroom homes with moderate energy needs." },
+      { icon: "📶", title: "Wi-Fi Included", desc: "Monitor solar generation and battery status via smartphone app." },
+      { icon: "🔋", title: "LV Battery Ready", desc: "Works with Dyness, Deye, Pylontech and other 48V LV batteries." },
+      { icon: "💡", title: "Load Priority", desc: "Configurable load priority: solar → battery → grid in any order." },
+    ],
+    relatedIds: [22, 23, 18, 27],
+  },
+  26: {
+    id: 26,
+    name: "Deye 20kW 3-Phase LV Hybrid Inverter",
+    category: "Inverters",
+    price: "Ksh 289,900.00",
+    priceRaw: 289900,
+    image: "inverters/in12.png",
+    images: ["inverters/in12.png"],
+    rating: 4.8,
+    reviews: 19,
+    inStock: true,
+    description: "The Deye 20kW Three-Phase Hybrid Inverter is a commercial-grade powerhouse designed for factories, shopping centres, hotels and large commercial buildings. It delivers balanced three-phase output while managing solar and battery storage with precision.",
+    specs: [
+      ["Rated Power", "20000W (3-Phase)"],
+      ["Battery Voltage", "40 – 60V (LV)"],
+      ["MPPT Trackers", "3"],
+      ["Max PV Voltage", "600V DC"],
+      ["Max Battery Charge/Discharge", "200A / 200A"],
+      ["AC Output", "400V / 50Hz (3-Phase)"],
+      ["Max Efficiency", "98.5%"],
+      ["EPS Transfer", "<20ms"],
+      ["Communication", "Wi-Fi / RS485 / CAN / Ethernet"],
+      ["Protection Class", "IP65"],
+      ["Weight", "32 kg"],
+      ["Warranty", "5 Years"],
+    ],
+    features: [
+      { icon: "🏬", title: "Commercial Grade", desc: "Built for high-demand commercial applications and industrial use." },
+      { icon: "⚖️", title: "Balanced 3-Phase", desc: "Distributes load evenly across all three phases for stability." },
+      { icon: "🔀", title: "Triple MPPT", desc: "Three independent trackers for large, complex PV installations." },
+      { icon: "📡", title: "SCADA Compatible", desc: "RS485 Modbus for integration with building management systems." },
+    ],
+    relatedIds: [21, 24, 23, 20],
+  },
+  27: {
+    id: 27,
+    name: "Deye LV 5kWh 48V Battery",
+    category: "Batteries",
+    price: "Ksh 140,000.00",
+    priceRaw: 140000,
+    image: "inverters/Batteries/b1.png",
+    images: ["inverters/Batteries/b1.png"],
+    rating: 4.7,
+    reviews: 52,
+    inStock: true,
+    description: "The Deye LV 5kWh 48V Battery is a wall-mounted lithium iron phosphate energy storage unit designed specifically for Deye hybrid inverters, though compatible with other leading inverter brands. Its sleek form factor and robust BMS make it a popular choice for residential installations.",
+    specs: [
+      ["Usable Capacity", "5.12 kWh"],
+      ["Nominal Voltage", "48V"],
+      ["Cell Chemistry", "LiFePO4"],
+      ["Max Charge Current", "100A"],
+      ["Max Discharge Current", "100A"],
+      ["Depth of Discharge", "90%"],
+      ["Cycle Life", ">6000 cycles"],
+      ["Communication", "CAN / RS485"],
+      ["Protection Class", "IP55"],
+      ["Operating Temperature", "0°C – 55°C"],
+      ["Weight", "48 kg"],
+      ["Warranty", "10 Years"],
+    ],
+    features: [
+      { icon: "🔗", title: "Deye Optimised", desc: "Plug-and-play communication with Deye hybrid inverters." },
+      { icon: "🔒", title: "IP55 Rated", desc: "Protected against dust and water ingress for indoor/outdoor mounting." },
+      { icon: "🔄", title: "6000+ Cycles", desc: "Over 16 years of daily charge-discharge with 80% capacity retention." },
+      { icon: "📦", title: "Modular", desc: "Stack up to 16 units in parallel for up to 80kWh of storage." },
+    ],
+    relatedIds: [2, 28, 29, 30],
+  },
+  28: {
+    id: 28,
+    name: "Deye LV 16kWh Battery",
+    category: "Batteries",
+    price: "Ksh 320,000.00",
+    priceRaw: 320000,
+    image: "inverters/Batteries/b2.png",
+    images: ["inverters/Batteries/b2.png"],
+    rating: 4.8,
+    reviews: 24,
+    inStock: true,
+    description: "The Deye LV 16kWh Battery is a high-capacity, floor-standing energy storage system for homes and businesses with significant overnight power requirements. Three units of 5.12kWh in a single rack deliver 16kWh of usable capacity — enough to power an average home through the night.",
+    specs: [
+      ["Usable Capacity", "16.38 kWh"],
+      ["Nominal Voltage", "48V"],
+      ["Cell Chemistry", "LiFePO4"],
+      ["Max Charge Current", "200A"],
+      ["Max Discharge Current", "200A"],
+      ["Depth of Discharge", "90%"],
+      ["Cycle Life", ">6000 cycles"],
+      ["Communication", "CAN / RS485"],
+      ["Mounting", "Floor Standing / Rack"],
+      ["Protection Class", "IP55"],
+      ["Weight", "145 kg"],
+      ["Warranty", "10 Years"],
+    ],
+    features: [
+      { icon: "🌙", title: "All-Night Coverage", desc: "16kWh is sufficient to power a home entirely through the night." },
+      { icon: "🏗️", title: "Rack System", desc: "Professional rack-mount design for clean, organised installation." },
+      { icon: "⚡", title: "200A Throughput", desc: "High charge/discharge current for fast cycling and peak support." },
+      { icon: "📊", title: "BMS Integration", desc: "Master BMS manages all cells simultaneously for balanced operation." },
+    ],
+    relatedIds: [27, 2, 29, 30],
+  },
+  29: {
+    id: 29,
+    name: "Dyness/Maqbul LV DL 5.0C 5.12kWh 100Ah",
+    category: "Batteries",
+    price: "Ksh 130,000.00",
+    priceRaw: 130000,
+    image: "inverters/Batteries/b3.png",
+    images: ["inverters/Batteries/b3.png"],
+    rating: 4.6,
+    reviews: 41,
+    inStock: true,
+    description: "The Dyness/Maqbul DL 5.0C is a proven 5.12kWh LiFePO4 battery module with a compact design and outstanding value for money. Its 100Ah nominal capacity and wide compatibility with major inverter brands make it the go-to choice for budget-conscious solar adopters.",
+    specs: [
+      ["Nominal Capacity", "100Ah / 5.12kWh"],
+      ["Nominal Voltage", "51.2V"],
+      ["Cell Chemistry", "LiFePO4"],
+      ["Max Charge Current", "100A"],
+      ["Max Discharge Current", "100A"],
+      ["Depth of Discharge", "80%"],
+      ["Cycle Life", ">6000 cycles @ 80% DoD"],
+      ["Communication", "CAN 2.0 / RS485"],
+      ["Protection Class", "IP20"],
+      ["Weight", "46.5 kg"],
+      ["Dimensions", "440 × 410 × 155 mm"],
+      ["Warranty", "5 Years"],
+    ],
+    features: [
+      { icon: "💲", title: "Best Value", desc: "Competitive pricing without sacrificing cycle life or safety." },
+      { icon: "🔌", title: "Wide Compatibility", desc: "Works with Solis, Growatt, Deye, SRNE and many more inverters." },
+      { icon: "🔄", title: "Parallel Expansion", desc: "Connect up to 8 units in parallel for up to 40kWh total." },
+      { icon: "🛡️", title: "Safety Certified", desc: "UN38.3 and IEC certified for safe transport and operation." },
+    ],
+    relatedIds: [2, 27, 28, 30],
+  },
+  30: {
+    id: 30,
+    name: "Dyness/Maqbul LV PowerBrick 14.3kWh 288Ah",
+    category: "Batteries",
+    price: "Ksh 280,000.00",
+    priceRaw: 280000,
+    image: "inverters/Batteries/b4.png",
+    images: ["inverters/Batteries/b4.png"],
+    rating: 4.7,
+    reviews: 18,
+    inStock: true,
+    description: "The Dyness/Maqbul PowerBrick is a large-format 14.3kWh LiFePO4 battery tower designed for maximum energy storage in minimum footprint. Its 288Ah capacity and intelligent BMS make it the ideal match for high-power hybrid inverters in large homes and commercial settings.",
+    specs: [
+      ["Nominal Capacity", "288Ah / 14.3kWh"],
+      ["Nominal Voltage", "51.2V"],
+      ["Cell Chemistry", "LiFePO4"],
+      ["Max Charge Current", "150A"],
+      ["Max Discharge Current", "150A"],
+      ["Depth of Discharge", "90%"],
+      ["Cycle Life", ">6000 cycles"],
+      ["Communication", "CAN 2.0 / RS485"],
+      ["Mounting", "Floor Standing"],
+      ["Protection Class", "IP20"],
+      ["Weight", "138 kg"],
+      ["Warranty", "5 Years"],
+    ],
+    features: [
+      { icon: "🧱", title: "PowerBrick Design", desc: "Integrated tower design reduces installation time and wiring." },
+      { icon: "⚡", title: "150A High Current", desc: "Supports rapid charging from large solar arrays or grid." },
+      { icon: "📈", title: "90% DoD", desc: "Use nearly all stored energy without degrading battery health." },
+      { icon: "🌍", title: "Commercial Ready", desc: "Suitable for schools, clinics, offices and light-commercial use." },
+    ],
+    relatedIds: [28, 29, 27, 2],
+  },
+  // Solar Panels
+  5: {
+    id: 5,
+    name: "615W JA Monocrystalline Panel",
+    category: "Solar Panels",
+    price: "Ksh 299,900.00",
+    priceRaw: 299900,
+    image: "image/image2.png",
+    images: ["image/image2.png"],
+    rating: 4.7,
+    reviews: 88,
+    inStock: true,
+    description: "The JA Solar 615W Monocrystalline Panel delivers high wattage in a standard-format frame, offering excellent performance for both on-grid and hybrid systems. Its PERC cell technology and multi-busbar design ensure superior low-light performance and reduced cell shading losses.",
+    specs: [
+      ["Peak Power (Pmax)", "615W"],
+      ["Module Efficiency", "21.0%"],
+      ["Open Circuit Voltage", "48.5V"],
+      ["Short Circuit Current", "16.02A"],
+      ["Cell Type", "Monocrystalline PERC"],
+      ["Cell Count", "144 Half-Cut"],
+      ["Operating Temperature", "-40°C to +85°C"],
+      ["Frame", "Anodized Aluminium"],
+      ["Connector", "MC4"],
+      ["Dimensions", "2278 × 1134 × 35 mm"],
+      ["Weight", "31.0 kg"],
+      ["Warranty", "25 Years Linear Power"],
+    ],
+    features: [
+      { icon: "⚡", title: "High Wattage", desc: "615W per panel means fewer panels for the same power output." },
+      { icon: "🌦️", title: "Low-Light Performance", desc: "Multi-busbar design excels on cloudy Kenyan highland days." },
+      { icon: "🔧", title: "Half-Cut Cells", desc: "Reduced shading impact and lower resistive losses throughout." },
+      { icon: "📜", title: "25-Year Warranty", desc: "Guaranteed linear power output decline less than 0.55%/year." },
+    ],
+    relatedIds: [1, 8, 9, 12],
+  },
+  8: {
+    id: 8,
+    name: "JA 700W Bifacial N-Type Double Glass Panel",
+    category: "Solar Panels",
+    price: "Ksh 19,500.00",
+    priceRaw: 19500,
+    image: "image/image7.png",
+    images: ["image/image7.png"],
+    rating: 4.8,
+    reviews: 61,
+    inStock: true,
+    description: "The JA Solar 700W Bifacial N-Type Double Glass Panel (JAM66D46-700/LB) represents cutting-edge solar technology. N-Type cells deliver higher efficiency and lower degradation than P-Type, while the bifacial design captures reflected ground light from both sides — increasing yield by up to 30% in the right installation environment.",
+    specs: [
+      ["Peak Power (Pmax)", "700W"],
+      ["Module Efficiency", "22.4%"],
+      ["Bifacial Gain", "Up to 30%"],
+      ["Cell Type", "N-Type TOPCon"],
+      ["Glass", "Dual Tempered Glass (2.0mm)"],
+      ["Open Circuit Voltage", "51.8V"],
+      ["Short Circuit Current", "17.20A"],
+      ["Temperature Coefficient", "-0.30%/°C"],
+      ["Frame", "Frameless (Dual Glass)"],
+      ["Connector", "MC4"],
+      ["Weight", "34.5 kg"],
+      ["Warranty", "30 Years Linear Output"],
+    ],
+    features: [
+      { icon: "🌟", title: "N-Type TOPCon", desc: "Next-gen cell tech with less LID and better high-temp performance." },
+      { icon: "🔄", title: "Bifacial Gain", desc: "Captures albedo light from ground reflection for extra yield." },
+      { icon: "🪟", title: "Dual Glass", desc: "Frameless double-glass withstands harsh weather and coastal salt." },
+      { icon: "📜", title: "30-Year Warranty", desc: "Longest warranty in the market — 30 years linear power output." },
+    ],
+    relatedIds: [9, 10, 1, 5],
+  },
+  9: {
+    id: 9,
+    name: "JINKO 585W Bifacial Solar Panel JKM585M-72HL4-V",
+    category: "Solar Panels",
+    price: "Ksh 16,380.00",
+    priceRaw: 16380,
+    image: "image/image6.png",
+    images: ["image/image6.png"],
+    rating: 4.7,
+    reviews: 94,
+    inStock: true,
+    description: "The JinkoSolar 585W Bifacial PERC panel is one of the most popular high-wattage modules on the Kenyan market. Its combination of bifaciality, half-cut cell technology and attractive pricing makes it the top choice for installers seeking maximum value per watt.",
+    specs: [
+      ["Peak Power (Pmax)", "585W"],
+      ["Module Efficiency", "21.3%"],
+      ["Bifacial Gain", "Up to 25%"],
+      ["Cell Type", "Monocrystalline PERC Bifacial"],
+      ["Cell Count", "144 Half-Cut"],
+      ["Open Circuit Voltage", "49.9V"],
+      ["Short Circuit Current", "14.82A"],
+      ["Temperature Coefficient", "-0.35%/°C"],
+      ["Frame", "Anodized Aluminium"],
+      ["Weight", "33.5 kg"],
+      ["Warranty", "25 Years Linear Output"],
+    ],
+    features: [
+      { icon: "💰", title: "Best Price per Watt", desc: "Outstanding value — one of the cheapest per-watt panels available." },
+      { icon: "🔄", title: "Bifacial Technology", desc: "Rear glass captures up to 25% additional energy from reflection." },
+      { icon: "⚡", title: "Half-Cut PERC", desc: "Better shading tolerance and lower temperature coefficient." },
+      { icon: "🏆", title: "Tier 1 Brand", desc: "JinkoSolar is a Bloomberg Tier 1 manufacturer — bankable and trusted." },
+    ],
+    relatedIds: [1, 8, 10, 12],
+  },
+  10: {
+    id: 10,
+    name: "Trina Solar 705W Monocrystalline Bifacial Panel",
+    category: "Solar Panels",
+    price: "Ksh 19,740.00",
+    priceRaw: 19740,
+    image: "image/image8.png",
+    images: ["image/image8.png"],
+    rating: 4.7,
+    reviews: 55,
+    inStock: true,
+    description: "The Trina Solar 705W Vertex S+ is a Tier 1 N-Type TOPCon bifacial module that delivers exceptional performance in both direct and diffuse irradiance conditions. With a market-leading efficiency of 22.3% and a 30-year linear power warranty, this panel is built to last.",
+    specs: [
+      ["Peak Power (Pmax)", "705W"],
+      ["Module Efficiency", "22.3%"],
+      ["Cell Type", "N-Type TOPCon Bifacial"],
+      ["Bifacial Gain", "Up to 25%"],
+      ["Open Circuit Voltage", "52.1V"],
+      ["Short Circuit Current", "17.24A"],
+      ["Temperature Coefficient", "-0.29%/°C"],
+      ["Glass", "3.2mm + 2.0mm Dual Glass"],
+      ["Weight", "35.0 kg"],
+      ["Warranty", "30 Years Linear Output"],
+    ],
+    features: [
+      { icon: "🌟", title: "N-Type Efficiency", desc: "22.3% efficiency — captures more energy from Kenya's strong sun." },
+      { icon: "🧊", title: "Low Temperature Coefficient", desc: "Retains more power output even during hot afternoon conditions." },
+      { icon: "🔄", title: "Bifacial Dual Glass", desc: "Durable dual-glass frame with no corrosion and no delamination." },
+      { icon: "🏆", title: "Trina Tier 1", desc: "Bloomberg Tier 1 for 11 consecutive years — proven reliability." },
+    ],
+    relatedIds: [8, 9, 1, 13],
+  },
+  11: {
+    id: 11,
+    name: "Dayliff 200W Monocrystalline Solar Panel",
+    category: "Solar Panels",
+    price: "Ksh 12,000.00",
+    priceRaw: 12000,
+    image: "image/image9.png",
+    images: ["image/image9.png"],
+    rating: 4.5,
+    reviews: 139,
+    inStock: true,
+    description: "The Dayliff 200W Monocrystalline Panel is a trusted, locally-proven solar panel available across Kenya through the extensive Dayliff distribution network. Ideal for small systems, water pumping, gate automation, and rural electrification projects where compact size matters.",
+    specs: [
+      ["Peak Power (Pmax)", "200W"],
+      ["Module Efficiency", "19.8%"],
+      ["Open Circuit Voltage", "24.3V"],
+      ["Short Circuit Current", "10.48A"],
+      ["Maximum Power Voltage", "20.6V"],
+      ["Cell Type", "Monocrystalline"],
+      ["Cell Count", "60"],
+      ["Frame", "Anodized Aluminium"],
+      ["Weight", "14.5 kg"],
+      ["Dimensions", "1320 × 992 × 35 mm"],
+      ["Warranty", "10 Years Product, 25 Years Output"],
+    ],
+    features: [
+      { icon: "🇰🇪", title: "Kenyan Distribution", desc: "Available through Dayliff's nationwide dealer and service network." },
+      { icon: "🏠", title: "Small Systems", desc: "Perfect for lighting, phone charging and small appliance loads." },
+      { icon: "💧", title: "Pump Applications", desc: "Popular for solar water pumping and borehole systems." },
+      { icon: "🔧", title: "Easy to Install", desc: "Lightweight design with standard MC4 connectors for quick setup." },
+    ],
+    relatedIds: [9, 1, 12, 13],
+  },
+  12: {
+    id: 12,
+    name: "Longi Solar 615W Monocrystalline Bifacial Panel",
+    category: "Solar Panels",
+    price: "Ksh 17,220.00",
+    priceRaw: 17220,
+    image: "image/image10.png",
+    images: ["image/image10.png"],
+    rating: 4.8,
+    reviews: 72,
+    inStock: true,
+    description: "LONGi is the world's largest monocrystalline solar manufacturer and the 615W Hi-MO 5 bifacial panel showcases why. Advanced multi-busbar technology and superior cell quality deliver class-leading efficiency and reliability in a competitively priced package.",
+    specs: [
+      ["Peak Power (Pmax)", "615W"],
+      ["Module Efficiency", "21.1%"],
+      ["Bifacial Gain", "Up to 25%"],
+      ["Cell Type", "Monocrystalline PERC Bifacial"],
+      ["Open Circuit Voltage", "49.5V"],
+      ["Short Circuit Current", "15.74A"],
+      ["Temperature Coefficient", "-0.34%/°C"],
+      ["Cell Count", "144 Half-Cut"],
+      ["Weight", "32.0 kg"],
+      ["Warranty", "25 Years Linear Output"],
+    ],
+    features: [
+      { icon: "🌍", title: "World's #1 Mono", desc: "LONGi is the largest monocrystalline panel maker globally." },
+      { icon: "📡", title: "Multi-Busbar", desc: "9-busbar design reduces resistive losses for more power." },
+      { icon: "🔄", title: "Bifacial Yield", desc: "Up to 25% additional yield from rear-side irradiance." },
+      { icon: "💚", title: "Green Manufacturer", desc: "LONGi has pledged 100% renewable energy for all production." },
+    ],
+    relatedIds: [13, 9, 1, 10],
+  },
+  13: {
+    id: 13,
+    name: "Longi Solar 620W Monocrystalline Bifacial Panel",
+    category: "Solar Panels",
+    price: "Ksh 17,360.00",
+    priceRaw: 17360,
+    image: "image/image11.png",
+    images: ["image/image11.png"],
+    rating: 4.8,
+    reviews: 58,
+    inStock: true,
+    description: "The LONGi 620W Hi-MO 5 steps up from the 615W with enhanced cell sorting and tighter binning tolerance for consistent, high-output performance. A favourite among system integrators who need reliable, high-wattage panels for residential rooftop projects.",
+    specs: [
+      ["Peak Power (Pmax)", "620W"],
+      ["Module Efficiency", "21.3%"],
+      ["Bifacial Gain", "Up to 25%"],
+      ["Cell Type", "Monocrystalline PERC Bifacial"],
+      ["Open Circuit Voltage", "49.8V"],
+      ["Short Circuit Current", "15.82A"],
+      ["Temperature Coefficient", "-0.34%/°C"],
+      ["Cell Count", "144 Half-Cut"],
+      ["Weight", "32.5 kg"],
+      ["Warranty", "25 Years Linear Output"],
+    ],
+    features: [
+      { icon: "🎯", title: "Tight Binning", desc: "Consistent power output — every panel in spec, every time." },
+      { icon: "🔄", title: "Bifacial Glass", desc: "Dual glass captures extra energy from albedo ground reflection." },
+      { icon: "☀️", title: "Superior Low-Light", desc: "Performs excellently during the hazy season and overcast days." },
+      { icon: "🏗️", title: "Strong Frame", desc: "Heavy-duty anodised aluminium frame rated for 2400 Pa wind." },
+    ],
+    relatedIds: [12, 9, 10, 1],
+  },
+};
+
+/* ═══════════════════════════════════════════════
+   RENDER LOGIC
+═══════════════════════════════════════════════ */
+function getProductId() {
+  const params = new URLSearchParams(window.location.search);
+  return parseInt(params.get('id'));
+}
+
+function renderStars(rating) {
+  const full = Math.floor(rating);
+  const half = rating % 1 >= 0.5;
+  let s = '';
+  for (let i = 0; i < full; i++) s += '★';
+  if (half) s += '½';
+  while (s.replace('½','').length < 5) s += '☆';
+  return s;
+}
+
+function getRelatedProducts(ids) {
+  return ids.map(id => PRODUCTS[id]).filter(Boolean);
+}
+
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+  document.getElementById(`tab-${tabId}`).classList.add('active');
+}
+
+function adjustQty(delta) {
+  const inp = document.getElementById('qty-input');
+  let v = parseInt(inp.value) + delta;
+  if (v < 1) v = 1;
+  if (v > 99) v = 99;
+  inp.value = v;
+}
+
+function addCurrentToCart(product) {
+  const qty = parseInt(document.getElementById('qty-input').value) || 1;
+  for (let i = 0; i < qty; i++) {
+    cart.addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.priceRaw,
+      category: product.category,
+      image: product.image
+    });
+  }
+}
+
+function renderProduct(product) {
+  const related = getRelatedProducts(product.relatedIds || []);
+
+  return `
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="index.html">Home</a>
+      <span class="breadcrumb-sep">›</span>
+      <a href="products.html">Products</a>
+      <span class="breadcrumb-sep">›</span>
+      <a href="products.html">${product.category}</a>
+      <span class="breadcrumb-sep">›</span>
+      <span class="breadcrumb-current">${product.name}</span>
+    </nav>
+
+    <!-- Hero -->
+    <div class="product-hero">
+      <!-- Gallery -->
+      <div class="product-gallery">
+        <div class="main-image-wrap" id="main-img-wrap">
+          <span class="category-badge">${product.category}</span>
+          <img id="main-img" src="${product.image}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/400x400?text=No+Image'">
+        </div>
+        <div class="thumb-row">
+          ${product.images.map((src, i) => `
+            <div class="thumb ${i === 0 ? 'active' : ''}" onclick="switchImage('${src}', this)">
+              <img src="${src}" alt="View ${i+1}" onerror="this.src='https://via.placeholder.com/80x80'">
+            </div>
+          `).join('')}
+        </div>
+      </div>
+
+      <!-- Info -->
+      <div class="product-info">
+        <div class="product-meta">
+          <span class="meta-tag">${product.category}</span>
+          ${product.inStock ? `<span class="meta-tag green"><span class="stock-dot"></span>&nbsp; In Stock</span>` : `<span class="meta-tag" style="background:#fef2f2;color:#dc2626;">Out of Stock</span>`}
+        </div>
+
+        <h1 class="product-title">${product.name}</h1>
+
+        <div class="rating-row">
+          <span class="stars">${renderStars(product.rating)}</span>
+          <span style="font-weight:700;color:#1e293b;">${product.rating}</span>
+          <span class="rating-count">(${product.reviews} reviews)</span>
+        </div>
+
+        <div class="product-price-row">
+          <span class="product-price">${product.price}</span>
+        </div>
+
+        <div class="divider"></div>
+
+        <p class="product-desc">${product.description}</p>
+
+        <div class="divider"></div>
+
+        <!-- Quick Specs -->
+        <div class="specs-grid">
+          ${product.specs.slice(0,4).map(([label, val]) => `
+            <div class="spec-item">
+              <div class="spec-label">${label}</div>
+              <div class="spec-value">${val}</div>
+            </div>
+          `).join('')}
+        </div>
+
+        <!-- Actions -->
+        <div class="action-row">
+          <div class="qty-control">
+            <button class="qty-btn" onclick="adjustQty(-1)">−</button>
+            <input id="qty-input" class="qty-input" type="number" value="1" min="1" max="99">
+            <button class="qty-btn" onclick="adjustQty(1)">+</button>
+          </div>
+          <button class="btn-add" onclick="addCurrentToCart(window.__currentProduct)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+            </svg>
+            Add to Cart
+          </button>
+          <button class="btn-quote" onclick="window.location.href='getaquote.html'">Get Quote</button>
+        </div>
+
+        <!-- Highlights -->
+        <div class="highlights">
+          <div class="highlight-item">
+            <div class="highlight-icon">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+            <span>Fast delivery across Kenya — Nairobi, Mombasa, Kisumu and beyond</span>
+          </div>
+          <div class="highlight-item">
+            <div class="highlight-icon">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <span>Manufacturer-backed warranty &amp; Univolt Power aftersales support</span>
+          </div>
+          <div class="highlight-item">
+            <div class="highlight-icon">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+            </div>
+            <span>Professional installation available — contact us for site assessment</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs-section">
+      <div class="tab-nav">
+        <button class="tab-btn active" data-tab="specs" onclick="switchTab('specs')">Full Specifications</button>
+        <button class="tab-btn" data-tab="features" onclick="switchTab('features')">Features &amp; Benefits</button>
+        <button class="tab-btn" data-tab="install" onclick="switchTab('install')">Installation &amp; Support</button>
+      </div>
+
+      <div id="tab-specs" class="tab-panel active">
+        <table class="spec-table">
+          <tbody>
+            ${product.specs.map(([label, val]) => `
+              <tr><th>${label}</th><td>${val}</td></tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+
+      <div id="tab-features" class="tab-panel">
+        <div class="features-list">
+          ${(product.features || []).map(f => `
+            <div class="feature-card">
+              <div class="feature-icon">${f.icon}</div>
+              <div>
+                <div class="feature-title">${f.title}</div>
+                <div class="feature-desc">${f.desc}</div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+
+      <div id="tab-install" class="tab-panel">
+        <div style="max-width:640px;line-height:1.8;color:#475569;font-size:.95rem;">
+          <h3 style="font-family:'Syne',sans-serif;color:#1e293b;margin-bottom:1rem;">Installation & After-Sales Support</h3>
+          <p style="margin-bottom:1rem;">Univolt Power provides end-to-end installation services for all products sold through our platform. Our certified technicians are available in Nairobi, Mombasa, Kisumu, Nakuru and major towns across Kenya.</p>
+          <h4 style="color:#1e293b;margin:.75rem 0 .35rem;">What's included with your purchase:</h4>
+          <ul style="padding-left:1.25rem;margin-bottom:1rem;">
+            <li>Free pre-installation site assessment (within Nairobi)</li>
+            <li>Professional installation by certified engineers</li>
+            <li>System commissioning and performance testing</li>
+            <li>Monitoring setup and app configuration</li>
+            <li>1-year workmanship warranty on all installations</li>
+          </ul>
+          <h4 style="color:#1e293b;margin:.75rem 0 .35rem;">Contact our technical team:</h4>
+          <p>📞 Call/WhatsApp: <strong>+254 700 000 000</strong><br>
+          📧 Email: <strong>info@univoltpower.com</strong><br>
+          🕒 Hours: Mon–Fri 8am–6pm | Sat 9am–4pm</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Related Products -->
+    ${related.length > 0 ? `
+    <div class="related-section">
+      <div class="related-inner">
+        <h2 class="section-title">You Might Also Like</h2>
+        <div class="related-grid">
+          ${related.map(rp => `
+            <div class="related-card" onclick="window.location.href='productdetail.html?id=${rp.id}'">
+              <div class="related-img"><img src="${rp.image}" alt="${rp.name}" onerror="this.src='https://via.placeholder.com/200x160'"></div>
+              <div class="related-info">
+                <div class="related-name">${rp.name}</div>
+                <div class="related-price">${rp.price}</div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+    ` : ''}
+  `;
+}
+
+function switchImage(src, thumbEl) {
+  document.getElementById('main-img').src = src;
+  document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+  thumbEl.classList.add('active');
+}
+
+function renderNotFound(id) {
+  return `
+    <div class="not-found">
+      <svg width="64" height="64" fill="none" stroke="#cbd5e1" stroke-width="1.5" viewBox="0 0 24 24" style="margin:0 auto 1.5rem">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <h2>Product Not Found</h2>
+      <p>We couldn't find product #${id}. It may have been removed or the link is incorrect.</p>
+      <a href="products.html" class="btn btn-primary" style="display:inline-flex;margin-top:1.5rem;">← Browse All Products</a>
+    </div>
+  `;
+}
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded', () => {
+  const id = getProductId();
+  const product = PRODUCTS[id];
+  const container = document.getElementById('product-page');
+
+  if (product) {
+    window.__currentProduct = product;
+    container.innerHTML = renderProduct(product);
+    document.title = `${product.name} — Univolt Power`;
+  } else {
+    container.innerHTML = renderNotFound(id || '?');
+  }
+
+  // Cart / nav helpers (from script.js pattern)
+  setActiveNav();
+
+  const cartOverlay = document.getElementById('cart-overlay');
+  if (cartOverlay) cartOverlay.addEventListener('click', () => cart.closeCart());
+
+  document.addEventListener('click', (e) => {
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    if (mobileMenu && menuBtn && !mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) {
+      mobileMenu.classList.remove('active');
+    }
+  });
+});
+
+function setActiveNav() {
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.classList.remove('active');
+    if (link.getAttribute('href') === 'products.html') link.classList.add('active');
+  });
+}
+
+function toggleMobileMenu() {
+  document.getElementById('mobile-menu')?.classList.toggle('active');
+}
+
+function handleCheckout() {
+  if (!cart || cart.cart.length === 0) {
+    cart.showToast('Your cart is empty!');
+    return;
+  }
+  cart.showToast('Checkout functionality coming soon!');
+}
+</script>
 </body>
 </html>

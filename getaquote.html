@@ -265,19 +265,22 @@
               <li><a href="index.html">Home</a></li>
               <li><a href="about.html">About</a></li>
               <li><a href="products.html">Products</a></li>
-              <li><a href="solutions.html">Services</a></li>
+              <li><a href="solutions.html">Solutions</a></li>
               <li><a href="projects.html">Projects</a></li>
             </ul>
           </div>
 
           <div class="footer-section">
-            <h3>Our Services</h3>
+            <h3>Our Solutions</h3>
             <ul>
-              <li><a href="solutions.html">Commercial Solar</a></li>
-              <li><a href="solutions.html">Residential Installation</a></li>
-              <li><a href="solutions.html">Maintenance & Repairs</a></li>
-              <li><a href="solutions.html">Battery Storage</a></li>
-              <li><a href="solutions.html">Consulting</a></li>
+              <li><a href="solutions.html">Solar EPC Solutions</a></li>
+              <li><a href="solutions.html">Residential Solar Solutions</a></li>
+              <li><a href="solutions.html">Commercial &amp; Industrial Solar Solutions</a></li>
+              <li><a href="solutions.html">Solar Water Pumping Solutions</a></li>
+              <li><a href="solutions.html">Solar Hot Water Solutions</a></li>
+              <li><a href="solutions.html">Solar Equipment Supply</a></li>
+              <li><a href="solutions.html">Electrical Installations &amp; Power Solutions</a></li>
+              <li><a href="solutions.html">Security System Installation</a></li>
             </ul>
           </div>
 
@@ -316,53 +319,45 @@
   </div>
 
   <script src="script.js"></script>
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
-    function handleQuoteSubmit(event) {
+    const EMAILJS_PUBLIC_KEY  = 'GdoRYZDY71qRwIY20';
+    const EMAILJS_SERVICE_ID  = 'service_85kdyz7';
+    const EMAILJS_TEMPLATE_ID = 'template_tadil5p';
+
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+
+    async function handleQuoteSubmit(event) {
       event.preventDefault();
-      
+
       const formData = new FormData(event.target);
       const data = Object.fromEntries(formData.entries());
-      
-      // Create email body
-      const emailBody = `
-NEW QUOTE REQUEST - Univolt Power
 
-CLIENT INFORMATION:
-Name/Company: ${data.fullName}
-Email: ${data.email}
-Phone: ${data.phone}
-Location: ${data.location || 'Not provided'}
+      const submitBtn = event.target.querySelector('button[type="submit"]');
+      const originalText = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = 'Sending...';
 
-SOLUTION/PRODUCT NEEDED:
-Type: ${data.solutionType}
-System Size: ${data.systemSize || 'Not specified'}
-Budget Range: ${data.budget || 'Not specified'}
-Timeline: ${data.timeline || 'Not specified'}
+      const templateParams = {
+        title:   `Quote Request - ${data.solutionType} - ${data.fullName}`,
+        name:    data.fullName,
+        email:   data.email,
+        time:    new Date().toLocaleString(),
+        message: `Phone: ${data.phone}\nLocation: ${data.location || 'Not provided'}\nSolution: ${data.solutionType}\nSystem Size: ${data.systemSize || 'Not specified'}\nBudget: ${data.budget || 'Not specified'}\nTimeline: ${data.timeline || 'Not specified'}\nMonthly Bill: ${data.monthlyBill || 'Not provided'}\n\nProject Details:\n${data.description}`
+      };
 
-PROJECT DETAILS:
-${data.description}
-
-Current Monthly Bill: ${data.monthlyBill || 'Not provided'}
-
----
-Submitted: ${new Date().toLocaleString()}
-      `.trim();
-      
-      // Create mailto link
-      const subject = encodeURIComponent(`Quote Request - ${data.solutionType} - ${data.fullName}`);
-      const body = encodeURIComponent(emailBody);
-      const mailtoLink = `mailto:univoltpower@gmail.com?subject=${subject}&body=${body}`;
-      
-      // Open email client
-      window.location.href = mailtoLink;
-      
-      // Show success message
-      cart.showToast('Quote request prepared! Your email client will open.');
-      
-      // Reset form after short delay
-      setTimeout(() => {
+      try {
+        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
+        cart.showToast('Quote request sent successfully!');
         event.target.reset();
-      }, 2000);
+      } catch (error) {
+        console.error('EmailJS error:', error);
+        cart.showToast('Failed to send. Please email us directly at univoltpower@gmail.com');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+      }
     }
   </script>
 </body>

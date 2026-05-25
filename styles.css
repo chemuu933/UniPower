@@ -788,8 +788,6 @@ button {
 .form-select:focus,
 .form-textarea:focus {
   border-color: var(--brand-blue);
-  ring: 2px;
-  ring-color: var(--brand-blue);
   box-shadow: 0 0 0 3px rgba(46, 52, 127, 0.1);
 }
 

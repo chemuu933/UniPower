@@ -276,19 +276,22 @@
               <li><a href="index.html">Home</a></li>
               <li><a href="about.html">About</a></li>
               <li><a href="products.html">Products</a></li>
-              <li><a href="solutions.html">Services</a></li>
+              <li><a href="solutions.html">Solutions</a></li>
               <li><a href="projects.html">Projects</a></li>
             </ul>
           </div>
 
           <div class="footer-section">
-            <h3>Our Services</h3>
+            <h3>Our Solutions</h3>
             <ul>
-              <li><a href="solutions.html">Commercial Solar</a></li>
-              <li><a href="solutions.html">Residential Installation</a></li>
-              <li><a href="solutions.html">Maintenance & Repairs</a></li>
-              <li><a href="solutions.html">Battery Storage</a></li>
-              <li><a href="solutions.html">Consulting</a></li>
+              <li><a href="solutions.html">Solar EPC Solutions</a></li>
+              <li><a href="solutions.html">Residential Solar Solutions</a></li>
+              <li><a href="solutions.html">Commercial &amp; Industrial Solar Solutions</a></li>
+              <li><a href="solutions.html">Solar Water Pumping Solutions</a></li>
+              <li><a href="solutions.html">Solar Hot Water Solutions</a></li>
+              <li><a href="solutions.html">Solar Equipment Supply</a></li>
+              <li><a href="solutions.html">Electrical Installations &amp; Power Solutions</a></li>
+              <li><a href="solutions.html">Security System Installation</a></li>
             </ul>
           </div>
 
@@ -327,5 +330,46 @@
   </div>
 
   <script src="script.js"></script>
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>
+    const EMAILJS_PUBLIC_KEY  = 'GdoRYZDY71qRwIY20';
+    const EMAILJS_SERVICE_ID  = 'service_85kdyz7';
+    const EMAILJS_TEMPLATE_ID = 'template_tadil5p';
+
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+
+    async function handleContactSubmit(event) {
+      event.preventDefault();
+
+      const formData = new FormData(event.target);
+      const data = Object.fromEntries(formData.entries());
+
+      const submitBtn = event.target.querySelector('button[type="submit"]');
+      const originalHTML = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = 'Sending...';
+
+      const templateParams = {
+        title:   `Contact Form - ${data.name}`,
+        name:    data.name,
+        email:   data.email,
+        time:    new Date().toLocaleString(),
+        message: `Phone: ${data.phone || 'Not provided'}\nProject Type: ${data.type || 'Not specified'}\n\nMessage:\n${data.message}`
+      };
+
+      try {
+        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
+        cart.showToast('Message sent successfully! We\'ll be in touch soon.');
+        event.target.reset();
+      } catch (error) {
+        console.error('EmailJS error:', error);
+        cart.showToast('Failed to send. Please email us directly at info@univoltpower.com');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalHTML;
+      }
+    }
+  </script>
 </body>
 </html>

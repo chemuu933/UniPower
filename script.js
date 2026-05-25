@@ -81,7 +81,7 @@ class CartManager {
             <div class="cart-item-details">
               <div class="cart-item-name">${item.name}</div>
               <div class="cart-item-qty">Qty: ${item.quantity}</div>
-              <div class="cart-item-price">$${(item.price * item.quantity).toFixed(2)}</div>
+              <div class="cart-item-price">${formatPrice(item.price * item.quantity)}</div>
             </div>
             <button class="cart-remove" onclick="cart.removeFromCart(${item.id})">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -97,7 +97,7 @@ class CartManager {
     // Update cart total
     const cartTotalElement = document.getElementById('cart-total');
     if (cartTotalElement) {
-      cartTotalElement.textContent = `$${cartTotal.toFixed(2)}`;
+      cartTotalElement.textContent = formatPrice(cartTotal);
     }
     
     // Update checkout button state
