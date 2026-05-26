@@ -1,5 +1,3 @@
-
-
 // Cart Management
 class CartManager {
   constructor() {
